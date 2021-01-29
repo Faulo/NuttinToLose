@@ -1,0 +1,12 @@
+# let git guess
+* text=auto
+
+# files that should always be normalized
+*.cs text
+*.meta text
+*.prefab text
+
+# files that should never be normalized
+*.png binary
+*.wav binary
+*.nn binary
