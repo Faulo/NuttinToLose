@@ -80,7 +80,11 @@ public class PlayerInput : MonoBehaviour {
         var targetVelocity = new Vector3(direction.x, currentVelocity.y, direction.z);
 
         currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref acceleration, accelerationDuration);
-        if (intendsJump) {
+        ProcessUpwards();
+        if (canJump) {
+            if ()
+        }
+            if (intendsJump) {
             if (canJump) {
                 player.data.isJumping = true;
                 currentVelocity.y = jumpStartSpeed;
