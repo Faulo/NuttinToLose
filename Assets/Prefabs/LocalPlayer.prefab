@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 9103178942037942308}
+  axis: {fileID: 0}
   referenceCamera: {fileID: 0}
   moveAction:
     m_Name: Move
@@ -185,6 +186,8 @@ MonoBehaviour:
   rotationDuration: 0.125
   maximumSpeed: 10
   jumpStartSpeed: 5
+  invertX: 1
+  invertY: 1
 --- !u!114 &9103178942037942308
 MonoBehaviour:
   m_ObjectHideFlags: 0

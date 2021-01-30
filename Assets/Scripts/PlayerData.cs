@@ -7,4 +7,8 @@ public class PlayerData {
     public Vector3 position = Vector3.zero;
     public Quaternion rotation = Quaternion.identity;
     public Vector3 velocity = Vector3.zero;
+
+    public bool isJumping = false;
+    public bool isGliding = false;
+    public bool isGrounded = false;
 }

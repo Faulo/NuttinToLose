@@ -5,6 +5,8 @@ public class CharacterInput : MonoBehaviour {
     [SerializeField]
     LocalPlayerController player = default;
     [SerializeField]
+    CinemachineAxisInput axis = default;
+    [SerializeField]
     Camera referenceCamera = default;
     [SerializeField]
     InputAction moveAction = new InputAction();
@@ -30,13 +32,20 @@ public class CharacterInput : MonoBehaviour {
     public float maximumSpeed = 10;
     [SerializeField, Range(0, 100)]
     float jumpStartSpeed = 10;
+    [Header("Camera")]
+    [SerializeField]
+    bool invertX = false;
+    [SerializeField]
+    bool invertY = false;
 
     void OnEnable() {
         moveAction.Enable();
+        lookAction.Enable();
         jumpAction.Enable();
     }
     void OnDisable() {
         moveAction.Disable();
+        lookAction.Disable();
         jumpAction.Disable();
     }
     void Awake() {
@@ -59,7 +68,7 @@ public class CharacterInput : MonoBehaviour {
         float currentRotation = player.attachedRigidbody.rotation.eulerAngles.y;
 
         var direction = new Vector3(intendedMove.x, 0, intendedMove.y);
-        //direction = referenceCamera.transform.rotation * direction;
+        direction = referenceCamera.transform.rotation * direction;
         direction *= maximumSpeed;
 
         var targetVelocity = new Vector3(direction.x, currentVelocity.y, direction.z);
@@ -75,6 +84,14 @@ public class CharacterInput : MonoBehaviour {
             float targetRotation = Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
             currentRotation = Mathf.SmoothDampAngle(currentRotation, targetRotation, ref rotationVelocity, rotationDuration);
         }
+
+        axis.input.x = invertX
+            ? -intendedLook.x
+            : intendedLook.x;
+        axis.input.y = invertY
+            ? -intendedLook.y
+            : intendedLook.y;
+
         player.data.rotation = Quaternion.Euler(0, currentRotation, 0);
         player.UpdateState();
     }
