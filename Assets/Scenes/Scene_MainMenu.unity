@@ -372,6 +372,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1354201692454188011, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_fontSize
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 1653750541669986785, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -385,10 +389,34 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1653750541669986785, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653750541669986785, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1653750541669986785, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915662519182568993, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.47451523
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915662519182568993, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915662519182568993, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915662519182568993, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1915662519182568993, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -405,6 +433,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1986954920841989322, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1986954920841989322, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -412,17 +444,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3076554031200816382, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 11400000, guid: 4fc20e39d460bd94099730ac3df61a48, type: 2}
-    - target: {fileID: 3076554031200816382, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Load
+    - target: {fileID: 2282004367121829568, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_fontSize
+      value: 40
       objectReference: {fileID: 0}
-    - target: {fileID: 3076554031200816382, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LoadScene, YourNutz
+    - target: {fileID: 3247114871332518303, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_ChildScaleHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3247114871332518303, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_ChildControlHeight
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4605007512771445591, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_Pivot.x
@@ -512,22 +544,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 366443285}
-    - target: {fileID: 6763772220988297158, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 11400000, guid: 3d1a50abc92dd62458e2225e43e23d79, type: 2}
-    - target: {fileID: 6763772220988297158, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Load
-      objectReference: {fileID: 0}
-    - target: {fileID: 6763772220988297158, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LoadScene, YourNutz
-      objectReference: {fileID: 0}
-    - target: {fileID: 6763772220988297158, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 6781475410939463185, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_Camera
       value: 
@@ -557,6 +573,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7033758624630813401, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033758624630813401, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -567,6 +587,10 @@ PrefabInstance:
     - target: {fileID: 7548456100790655431, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
       propertyPath: m_Name
       value: Camera_Canvas_MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7549420049950510584, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}
+      propertyPath: m_fontSize
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c00b14b223052b14caf6e3715df1eed8, type: 3}

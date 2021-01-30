@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4129731002420151629, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+      propertyPath: m_fontSize
+      value: 24.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4605007512771445591, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -507,6 +511,14 @@ PrefabInstance:
     - target: {fileID: 7548456100790655431, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
       propertyPath: m_Name
       value: P_Camera_Canvas_Credits
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931373429752481357, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+      propertyPath: m_fontSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931373429752481357, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+      propertyPath: m_margin.w
+      value: -0.26538086
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
