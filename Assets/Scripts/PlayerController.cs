@@ -47,6 +47,6 @@ public class PlayerController : MonoBehaviour {
     void UpdateStorage() {
         data.position = attachedRigidbody.position;
         data.angle = attachedRigidbody.rotation.eulerAngles.y;
-        data.horizontalSpeed = new Vector2(attachedRigidbody.velocity.x, attachedRigidbody.velocity.z).magnitude;
+        data.speed = new Vector2(attachedRigidbody.velocity.x, attachedRigidbody.velocity.z).magnitude;
     }
 }

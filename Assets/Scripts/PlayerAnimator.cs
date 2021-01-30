@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour {
     enum Parameters {
-        horizontalSpeed,
         state,
+        speed,
     }
     [SerializeField]
     PlayerController player = default;
@@ -22,7 +22,7 @@ public class PlayerAnimator : MonoBehaviour {
         }
     }
     void Update() {
-        animator.SetFloat(nameof(Parameters.horizontalSpeed), player.data.horizontalSpeed);
+        animator.SetFloat(nameof(Parameters.speed), player.data.speed);
         animator.SetInteger(nameof(Parameters.state), player.data.state);
     }
 }

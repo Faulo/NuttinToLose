@@ -55,8 +55,9 @@ public class PlayerInput : MonoBehaviour {
     float accelerationDuration => currentSettings.accelerationDuration;
     float rotationDuration => currentSettings.rotationDuration;
     float maximumSpeed => currentSettings.maximumSpeed;
-    public float forwardBoost => currentSettings.forwardBoost;
-    public float upwardsBoost => currentSettings.upwardsBoost;
+    float forwardBoost => currentSettings.forwardBoost;
+    float upwardsBoost => currentSettings.upwardsBoost;
+    bool isGrounded => groundCheck.isGrounded;
 
     [Header("Camera")]
     [SerializeField]
@@ -90,7 +91,6 @@ public class PlayerInput : MonoBehaviour {
 
     void FixedUpdate() {
         UpdateIntentions();
-        player.data.isGrounded = groundCheck.isGrounded;
 
         var position = player.attachedRigidbody.position;
         var currentVelocity = player.attachedRigidbody.velocity;
@@ -143,7 +143,7 @@ public class PlayerInput : MonoBehaviour {
 
         //we're gliding, so we might wanna stop
         if (player.data.playerState == PlayerState.Gliding) {
-            if (!intendsJump || player.data.isGrounded) {
+            if (!intendsJump || isGrounded) {
                 player.data.playerState = PlayerState.Falling;
                 return;
             }
@@ -151,7 +151,7 @@ public class PlayerInput : MonoBehaviour {
         }
 
         // we're grounded, so we might wanna jump
-        if (player.data.isGrounded) {
+        if (isGrounded) {
             if (intendsJump && canStartJump) {
                 player.data.playerState = PlayerState.Jumping;
                 canStartJump = false;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19677d5781b22274f97a60ab99cdb133, type: 3}
   m_Name: Player_Glide
   m_EditorClassIdentifier: 
-  accelerationDuration: 10
+  accelerationDuration: 5
   rotationDuration: 1
   maximumSpeed: 15
   forwardBoost: 5
