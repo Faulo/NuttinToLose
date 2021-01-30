@@ -65,7 +65,6 @@ public class ServerConnection : MonoBehaviour {
             spawnedPlayers[data.id] = player;
         }
         player.data = data;
-        player.UpdateState();
     }
     public bool IsLocal(string id) => localId == id;
 }

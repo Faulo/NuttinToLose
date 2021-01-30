@@ -5,14 +5,17 @@ using UnityEngine;
 public class PlayerData {
     public string id;
 
-    public Vector3 position = Vector3.zero;
-    public Quaternion rotation = Quaternion.identity;
-    public Vector3 velocity = Vector3.zero;
+    public float horizontalSpeed;
+    public Vector3 position;
+    public float angle;
 
-    public bool isJumping = false;
-    public bool isGliding = false;
-    public bool isGrounded = false;
+    public bool isJumping;
+    public bool isGliding;
+    public bool isGrounded;
+    public bool isDiggingUp;
+    public bool isFakeDigging;
+    public bool isRealDigging;
 
-    public float verticalSpeed => velocity.y;
-    public float horizontalSpeed => new Vector2(velocity.x, velocity.z).magnitude;
+    public bool isDigging => isRealDigging || isFakeDigging || isDiggingUp;
+    public Quaternion rotation => Quaternion.Euler(0, angle, 0);
 }

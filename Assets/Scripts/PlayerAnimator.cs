@@ -6,7 +6,10 @@ public class PlayerAnimator : MonoBehaviour {
         verticalSpeed,
         isGrounded,
         isJumping,
-        isGliding
+        isGliding,
+        isRealDigging,
+        isFakeDigging,
+        isDiggingUp
     }
     [SerializeField]
     PlayerController player = default;
@@ -26,9 +29,11 @@ public class PlayerAnimator : MonoBehaviour {
     }
     void Update() {
         animator.SetFloat(nameof(Parameters.horizontalSpeed), player.data.horizontalSpeed);
-        animator.SetFloat(nameof(Parameters.verticalSpeed), player.data.verticalSpeed);
         animator.SetBool(nameof(Parameters.isGrounded), player.data.isGrounded);
         animator.SetBool(nameof(Parameters.isJumping), player.data.isJumping);
         animator.SetBool(nameof(Parameters.isGliding), player.data.isGliding);
+        animator.SetBool(nameof(Parameters.isRealDigging), player.data.isRealDigging);
+        animator.SetBool(nameof(Parameters.isFakeDigging), player.data.isFakeDigging);
+        animator.SetBool(nameof(Parameters.isDiggingUp), player.data.isDiggingUp);
     }
 }

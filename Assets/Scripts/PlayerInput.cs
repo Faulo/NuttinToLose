@@ -1,3 +1,4 @@
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,22 +25,53 @@ public class PlayerInput : MonoBehaviour {
     Vector3 acceleration;
     float rotationVelocity;
 
-    [SerializeField, Range(0, 1)]
-    float accelerationDuration = 0;
-    [SerializeField, Range(0, 1)]
-    float rotationDuration = 0;
+    [SerializeField, Expandable]
+    PlayerSettings idleSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings digSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings jumpSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings fallSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings glideSettings = default;
+
     [SerializeField, Range(0, 100)]
-    public float maximumSpeed = 10;
-    [SerializeField, Range(0, 100)]
-    float jumpStartSpeed = 10;
+    float jumpStopSpeed = 2;
+    [SerializeField, Range(0, 1)]
+    float rotationDeadzone = 0;
+
+    PlayerSettings currentSettings {
+        get {
+            if (player.data.isJumping) {
+                return jumpSettings;
+            }
+            if (player.data.isGliding) {
+                return glideSettings;
+            }
+            if (player.data.isDigging) {
+                return digSettings;
+            }
+            if (player.data.isGrounded) {
+                return idleSettings;
+            }
+            return fallSettings;
+        }
+    }
+
+    float accelerationDuration => currentSettings.accelerationDuration;
+    float rotationDuration => currentSettings.rotationDuration;
+    float maximumSpeed => currentSettings.maximumSpeed;
+    public float forwardBoost => currentSettings.forwardBoost;
+    public float upwardsBoost => currentSettings.upwardsBoost;
+
     [Header("Camera")]
     [SerializeField]
     bool invertX = false;
     [SerializeField]
     bool invertY = false;
 
-    bool canJump => player.data.isGrounded && !player.data.isJumping && !player.data.isGliding;
-    bool canGlide => !player.data.isGrounded && !player.data.isJumping && !player.data.isGliding;
+    bool canStartJump;
 
     void OnEnable() {
         moveAction.Enable();
@@ -78,23 +110,13 @@ public class PlayerInput : MonoBehaviour {
         var targetVelocity = new Vector3(direction.x, currentVelocity.y, direction.z);
 
         currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref acceleration, accelerationDuration);
-        if (intendsJump) {
-            if (canJump) {
-                player.data.isJumping = true;
-                currentVelocity.y = jumpStartSpeed;
-            }
-            if (canGlide) {
-                player.data.isGliding = true;
-                currentVelocity.y += jumpStartSpeed;
-            }
-        } else {
-            player.data.isJumping = false;
-            player.data.isGliding = false;
-        }
 
-        player.data.position = position;
-        player.data.velocity = currentVelocity;
-        if (direction != Vector3.zero) {
+        ProcessJump(ref currentVelocity);
+
+        currentVelocity += Physics.gravity * currentSettings.gravity * Time.deltaTime;
+
+        player.attachedRigidbody.velocity = currentVelocity;
+        if (direction.magnitude > rotationDeadzone) {
             float targetRotation = Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
             currentRotation = Mathf.SmoothDampAngle(currentRotation, targetRotation, ref rotationVelocity, rotationDuration);
         }
@@ -106,13 +128,63 @@ public class PlayerInput : MonoBehaviour {
             ? -intendedLook.y
             : intendedLook.y;
 
-        player.data.rotation = Quaternion.Euler(0, currentRotation, 0);
-        player.UpdateState();
+        player.attachedRigidbody.rotation = Quaternion.Euler(0, currentRotation, 0);
+
+        player.attachedRigidbody.drag = currentSettings.drag;
+    }
+
+    void ProcessJump(ref Vector3 velocity) {
+        // we're jumping, so we might wanna stop
+        if (player.data.isJumping) {
+            if (!intendsJump) {
+                player.data.isJumping = false;
+                velocity.y = jumpStopSpeed;
+                return;
+            }
+            if (velocity.y < jumpStopSpeed) {
+                player.data.isJumping = false;
+                return;
+            }
+            return;
+        }
+
+        //we're gliding, so we might wanna stop
+        if (player.data.isGliding) {
+            if (!intendsJump || player.data.isGrounded) {
+                player.data.isGliding = false;
+                return;
+            }
+            return;
+        }
+
+        // we're grounded, so we might wanna jump
+        if (player.data.isGrounded) {
+            if (intendsJump && canStartJump) {
+                player.data.isJumping = true;
+                canStartJump = false;
+                velocity += transform.forward * forwardBoost;
+                velocity += transform.up * upwardsBoost;
+                return;
+            }
+            return;
+        }
+
+        // we're falling, so we might wanna glide
+        if (intendsJump && canStartJump) {
+            player.data.isGliding = true;
+            canStartJump = false;
+            velocity += transform.forward * forwardBoost;
+            velocity += transform.up * upwardsBoost;
+            return;
+        }
     }
 
     void UpdateIntentions() {
         intendedMove = moveAction.ReadValue<Vector2>();
         intendedLook = lookAction.ReadValue<Vector2>();
         intendsJump = jumpAction.phase == InputActionPhase.Started;
+        if (!intendsJump) {
+            canStartJump = true;
+        }
     }
 }
