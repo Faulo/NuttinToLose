@@ -8,14 +8,22 @@ public class PlayerData {
     public float horizontalSpeed;
     public Vector3 position;
     public float angle;
-
-    public bool isJumping;
-    public bool isGliding;
+    public int state;
     public bool isGrounded;
-    public bool isDiggingUp;
-    public bool isFakeDigging;
-    public bool isRealDigging;
+
+    public bool isJumping => playerState == PlayerState.Jumping;
+    public bool isGliding => playerState == PlayerState.Gliding;
+    public bool isFalling => playerState == PlayerState.Falling;
+    public bool isDiggingUp => playerState == PlayerState.DiggingUp;
+    public bool isFakeDigging => playerState == PlayerState.FakeDigging;
+    public bool isRealDigging => playerState == PlayerState.RealDigging;
+
+    public PlayerState playerState {
+        get => (PlayerState)state;
+        set => state = (int)value;
+    }
 
     public bool isDigging => isRealDigging || isFakeDigging || isDiggingUp;
+    public bool isAirborne => isJumping || isGliding || !isFalling;
     public Quaternion rotation => Quaternion.Euler(0, angle, 0);
 }

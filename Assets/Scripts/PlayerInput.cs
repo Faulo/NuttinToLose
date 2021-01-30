@@ -41,23 +41,16 @@ public class PlayerInput : MonoBehaviour {
     [SerializeField, Range(0, 1)]
     float rotationDeadzone = 0;
 
-    PlayerSettings currentSettings {
-        get {
-            if (player.data.isJumping) {
-                return jumpSettings;
-            }
-            if (player.data.isGliding) {
-                return glideSettings;
-            }
-            if (player.data.isDigging) {
-                return digSettings;
-            }
-            if (player.data.isGrounded) {
-                return idleSettings;
-            }
-            return fallSettings;
-        }
-    }
+    PlayerSettings currentSettings => player.data.playerState switch {
+        PlayerState.Idle => idleSettings,
+        PlayerState.Jumping => jumpSettings,
+        PlayerState.Gliding => glideSettings,
+        PlayerState.Falling => fallSettings,
+        PlayerState.RealDigging => digSettings,
+        PlayerState.FakeDigging => digSettings,
+        PlayerState.DiggingUp => digSettings,
+        _ => throw new System.NotImplementedException(),
+    };
 
     float accelerationDuration => currentSettings.accelerationDuration;
     float rotationDuration => currentSettings.rotationDuration;
@@ -135,23 +128,23 @@ public class PlayerInput : MonoBehaviour {
 
     void ProcessJump(ref Vector3 velocity) {
         // we're jumping, so we might wanna stop
-        if (player.data.isJumping) {
+        if (player.data.playerState == PlayerState.Jumping) {
             if (!intendsJump) {
-                player.data.isJumping = false;
+                player.data.playerState = PlayerState.Falling;
                 velocity.y = jumpStopSpeed;
                 return;
             }
             if (velocity.y < jumpStopSpeed) {
-                player.data.isJumping = false;
+                player.data.playerState = PlayerState.Falling;
                 return;
             }
             return;
         }
 
         //we're gliding, so we might wanna stop
-        if (player.data.isGliding) {
+        if (player.data.playerState == PlayerState.Gliding) {
             if (!intendsJump || player.data.isGrounded) {
-                player.data.isGliding = false;
+                player.data.playerState = PlayerState.Falling;
                 return;
             }
             return;
@@ -160,23 +153,25 @@ public class PlayerInput : MonoBehaviour {
         // we're grounded, so we might wanna jump
         if (player.data.isGrounded) {
             if (intendsJump && canStartJump) {
-                player.data.isJumping = true;
+                player.data.playerState = PlayerState.Jumping;
                 canStartJump = false;
                 velocity += transform.forward * forwardBoost;
-                velocity += transform.up * upwardsBoost;
+                velocity += Vector3.up * upwardsBoost;
                 return;
             }
+            player.data.playerState = PlayerState.Idle;
             return;
         }
 
         // we're falling, so we might wanna glide
         if (intendsJump && canStartJump) {
-            player.data.isGliding = true;
+            player.data.playerState = PlayerState.Gliding;
             canStartJump = false;
             velocity += transform.forward * forwardBoost;
-            velocity += transform.up * upwardsBoost;
+            velocity += Vector3.up * upwardsBoost;
             return;
         }
+        player.data.playerState = PlayerState.Falling;
     }
 
     void UpdateIntentions() {
