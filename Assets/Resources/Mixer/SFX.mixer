@@ -6,7 +6,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Character
+  m_Name: Effect
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 936e2d11354869544ad9590d2e770aab
   m_Children: []
@@ -109,7 +109,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Effects
+  m_Name: Voice
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: d77d099a0e233f34080d1d3936e6e3b3
   m_Children: []
