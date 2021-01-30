@@ -2,7 +2,8 @@
     "name": "YourNutz",
     "rootNamespace": "",
     "references": [
-        "Unity.WebRTC"
+        "Unity.WebRTC",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
