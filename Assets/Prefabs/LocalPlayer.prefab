@@ -63,6 +63,62 @@ MonoBehaviour:
       m_Flags: 4
     - m_Name: up
       m_Id: 32871c67-b17f-4abb-a215-eb8f56c4d03f
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 22e8c71d-19f6-412b-b4af-79fc63d49a5b
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: left
+      m_Id: f80f1448-1c87-4955-8268-c71cbd2e72b4
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: right
+      m_Id: f15fc21f-cf11-4737-bf60-9deaae880fa4
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 8
+    - m_Name: 
+      m_Id: 4d831252-aaa0-4fb6-95f6-72cacb5a4ec1
+      m_Path: <Gamepad>/leftStick
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 0
+  lookAction:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a1802149-1694-478d-a820-62b7fdc5b7ae
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: c7bf87e7-04fa-43dd-9472-db454e7e1858
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 32871c67-b17f-4abb-a215-eb8f56c4d03f
       m_Path: <Keyboard>/upArrow
       m_Interactions: 
       m_Processors: 
@@ -95,20 +151,12 @@ MonoBehaviour:
       m_Flags: 8
     - m_Name: 
       m_Id: 4d831252-aaa0-4fb6-95f6-72cacb5a4ec1
-      m_Path: <Gamepad>/leftStick
+      m_Path: <Gamepad>/rightStick
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Move
       m_Flags: 0
-  lookAction:
-    m_Name: Look
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e78f4514-6831-446b-8581-3e5702170b43
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
   jumpAction:
     m_Name: Jump
     m_Type: 0
@@ -134,6 +182,7 @@ MonoBehaviour:
       m_Action: Jump
       m_Flags: 0
   accelerationDuration: 0.125
+  rotationDuration: 0.125
   maximumSpeed: 10
   jumpStartSpeed: 5
 --- !u!114 &9103178942037942308

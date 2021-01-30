@@ -20,8 +20,12 @@ public class CharacterInput : MonoBehaviour {
     bool intendsJump;
 
     Vector3 acceleration;
+    float rotationVelocity;
+
     [SerializeField, Range(0, 1)]
     float accelerationDuration = 0;
+    [SerializeField, Range(0, 1)]
+    float rotationDuration = 0;
     [SerializeField, Range(0, 100)]
     public float maximumSpeed = 10;
     [SerializeField, Range(0, 100)]
@@ -52,7 +56,7 @@ public class CharacterInput : MonoBehaviour {
 
         var position = player.attachedRigidbody.position;
         var currentVelocity = player.attachedRigidbody.velocity;
-        var currentRotation = player.attachedRigidbody.rotation;
+        float currentRotation = player.attachedRigidbody.rotation.eulerAngles.y;
 
         var direction = new Vector3(intendedMove.x, 0, intendedMove.y);
         //direction = referenceCamera.transform.rotation * direction;
@@ -67,11 +71,11 @@ public class CharacterInput : MonoBehaviour {
 
         player.data.position = position;
         player.data.velocity = currentVelocity;
-        if (direction == Vector3.zero) {
-            player.data.rotation = currentRotation;
-        } else {
-            player.data.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        if (direction != Vector3.zero) {
+            float targetRotation = Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
+            currentRotation = Mathf.SmoothDampAngle(currentRotation, targetRotation, ref rotationVelocity, rotationDuration);
         }
+        player.data.rotation = Quaternion.Euler(0, currentRotation, 0);
         player.UpdateState();
     }
 
