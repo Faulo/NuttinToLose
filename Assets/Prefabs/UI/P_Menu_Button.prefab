@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2494185748947713450}
   - component: {fileID: 7440178395642738095}
   - component: {fileID: 720960512532583107}
+  - component: {fileID: 5870979340018198557}
   m_Layer: 5
   m_Name: P_Menu_Button
   m_TagString: Untagged
@@ -121,6 +122,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5870979340018198557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845957322343969145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: 50
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1001 &436536376218422659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,7 +235,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_fontSize
-      value: 46.95
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
+      propertyPath: m_margin.w
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
+      propertyPath: m_margin.y
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_fontStyle
@@ -234,7 +263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_fontSizeMax
-      value: 46.95
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_enableAutoSizing
