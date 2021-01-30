@@ -32,10 +32,10 @@ RectTransform:
   m_Father: {fileID: 4605007512771445591}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 25}
-  m_SizeDelta: {x: 350, y: 100}
+  m_AnchorMin: {x: 0, y: 0.03341769}
+  m_AnchorMax: {x: 1, y: 0.16229117}
+  m_AnchoredPosition: {x: 0, y: -1}
+  m_SizeDelta: {x: -1028, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &3247114871332518303
 MonoBehaviour:
@@ -95,10 +95,10 @@ RectTransform:
   m_Father: {fileID: 1394998672252545688}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 258.2479, y: 0}
+  m_AnchorMin: {x: 0, y: 0.10286244}
+  m_AnchorMax: {x: 0.44027153, y: 0.7728625}
+  m_AnchoredPosition: {x: 0, y: 14.514}
+  m_SizeDelta: {x: 0, y: -28.971}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1916813424370124405
 CanvasRenderer:
@@ -130,11 +130,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Katharina Broswik
 
-    Nils Schwarz
+    Veronika Haidmann
 
-    Laura
+    Laura Rosinger
 
-    Daniel Schulz'
+    Daniel
+    Schulz
+
+    Nils Schwarz'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -161,12 +164,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.4
+  m_fontSize: 24.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 23.4
+  m_fontSizeMax: 80
   m_fontStyle: 0
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
@@ -175,7 +178,7 @@ MonoBehaviour:
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 58.06
+  m_paragraphSpacing: 66
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
@@ -235,10 +238,10 @@ RectTransform:
   m_Father: {fileID: 1394998672252545688}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 271.28, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.10286244}
+  m_AnchorMax: {x: 1, y: 0.7728625}
+  m_AnchoredPosition: {x: 0, y: -0.009796143}
+  m_SizeDelta: {x: 0, y: 0.077199936}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2532502971795132504
 CanvasRenderer:
@@ -270,11 +273,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: '2D Art - UX - VFX/Effects
 
-    3D Art - Level Design
+    3D Art (Environment)
 
     Sound
 
-    Coding'
+    Coding
+
+    3D
+    Art (Character) - Level Design'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -301,12 +307,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.4
+  m_fontSize: 24.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 23.4
+  m_fontSizeMax: 80
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -315,7 +321,7 @@ MonoBehaviour:
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 58.06
+  m_paragraphSpacing: 66
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
@@ -542,27 +548,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0.6843627
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0.5761332
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0.31563738
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0.18026629
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 555.5985
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 310
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_LocalPosition.x
@@ -594,11 +600,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -13.0343
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -91
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868846978707889631, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

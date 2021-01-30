@@ -233,6 +233,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2585851429862908676}
     m_Modifications:
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11400000, guid: 87c63b80e0c3cae49a594270a508d547, type: 2}
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: QuitGame, YourNutz
+      objectReference: {fileID: 0}
+    - target: {fileID: 720960512532583107, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2845957322343969145, guid: 431212e0cd1b0e64a8cd7b24d5e6d664, type: 3}
       propertyPath: m_Name
       value: Yes
