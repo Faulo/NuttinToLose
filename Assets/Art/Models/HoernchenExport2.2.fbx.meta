@@ -27,7 +27,47 @@ ModelImporter:
   - first:
       74: 4418485959098316647
     second: Armature|RunProto
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Auge
+    second: {fileID: 2100000, guid: 2d3c2df4638d1404b842c37e2104a8bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BlackArms
+    second: {fileID: 2100000, guid: d72c502dedda0fc468e373b374e14806, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hands
+    second: {fileID: 2100000, guid: 56f1128f306eabd43a7d891b6ffd3583, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Horn2
+    second: {fileID: 2100000, guid: d18f0e88542728f489fa9e46e5ad6bf4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Horn3
+    second: {fileID: 2100000, guid: 48aaba55cbdf08a41a9940f825856a41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mund
+    second: {fileID: 2100000, guid: de9fbab54b71dc6409180c6fc54fe085, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Nase
+    second: {fileID: 2100000, guid: 176482fc6e7d47340b27abe0a9c29256, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OhrInnen
+    second: {fileID: 2100000, guid: e89c1ae8ac30826478814841c4cd8ed0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -90,7 +130,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
