@@ -29,7 +29,7 @@ public class ServerConnection : MonoBehaviour {
     IEnumerator UpdatePlayerRoutine() {
         var wait = new WaitForSeconds(updateInterval);
         while (true) {
-            client.PushEvent("update", StringifyPlayer(localPlayer));
+            yield return client.PushRoutine("update", StringifyPlayer(localPlayer));
             yield return wait;
         }
     }
@@ -38,7 +38,7 @@ public class ServerConnection : MonoBehaviour {
         //Debug.Log(eve.type);
         switch (eve.type) {
             case "start":
-                client.PushEvent("spawn", StringifyPlayer(localPlayer));
+                StartCoroutine(client.PushRoutine("spawn", StringifyPlayer(localPlayer)));
                 break;
             case "spawn":
             case "update":
@@ -64,7 +64,8 @@ public class ServerConnection : MonoBehaviour {
             player = Instantiate(playerPrefab, data.position, data.rotation);
             spawnedPlayers[data.id] = player;
         }
-        player.SetData(data);
+        player.data = data;
+        player.UpdateState();
     }
     public bool IsLocal(string id) => localId == id;
 }

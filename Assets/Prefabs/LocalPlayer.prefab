@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab9b117f47956e4e9033de5d3dbec98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 9103178942037942308}
+  player: {fileID: 9103178942037942308}
+  referenceCamera: {fileID: 0}
   moveAction:
     m_Name: Move
     m_Type: 0
@@ -100,6 +101,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Move
       m_Flags: 0
+  lookAction:
+    m_Name: Look
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e78f4514-6831-446b-8581-3e5702170b43
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   jumpAction:
     m_Name: Jump
     m_Type: 0
@@ -124,6 +133,9 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Jump
       m_Flags: 0
+  accelerationDuration: 0.125
+  maximumSpeed: 10
+  jumpStartSpeed: 5
 --- !u!114 &9103178942037942308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,8 +149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachedRigidbody: {fileID: 3437413173279398844}
-  maximumSpeed: 10
-  currentInput: {x: 0, y: 0, z: 0}
 --- !u!1001 &5234813829767368220
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -146,6 +156,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 756486825124088473, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059939, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_Name
       value: LocalPlayer
@@ -160,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5.47
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.z

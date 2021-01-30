@@ -47,4 +47,4 @@ MonoBehaviour:
   localPlayer: {fileID: 0}
   localId: 
   playerPrefab: {fileID: 2794349412666252739, guid: 312b1046af7c5e944b7514701ae34d61, type: 3}
-  updateInterval: 1
+  updateInterval: 0.01
