@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Samples/WebRTC/2.3.1-preview/Example/MultiplePeerConnections/MultiplePeerConnections.unity
-    guid: ad11cc7c597c0e94d8cf4db5a3ebde11
+    path: Assets/Scenes/HelloWorld.unity
+    guid: 520cda32508d3ed4d893da9e0cd6642a
   m_configObjects: {}
