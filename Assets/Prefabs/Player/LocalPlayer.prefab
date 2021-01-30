@@ -241,11 +241,83 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Jump
       m_Flags: 0
-  idleSettings: {fileID: 0}
-  digSettings: {fileID: 0}
-  jumpSettings: {fileID: 0}
-  fallSettings: {fileID: 0}
-  glideSettings: {fileID: 0}
+  realDigAction:
+    m_Name: Real Dig
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 5063dfd4-735f-4b50-a829-89f7cdf3da60
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 91c8a302-820c-4629-ab99-a4a256d6666a
+      m_Path: <Gamepad>/buttonEast
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Real Dig
+      m_Flags: 0
+    - m_Name: 
+      m_Id: bddbd2db-f328-49ce-9b7b-3deb898b2d87
+      m_Path: <Keyboard>/1
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Real Dig
+      m_Flags: 0
+  fakeDigAction:
+    m_Name: Fake Dig
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 384aabce-8104-4e20-881c-70f0d71d47c3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: e3577f8f-a902-423c-ab1c-050e0df26786
+      m_Path: <Gamepad>/buttonWest
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Fake Dig
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 419ede3d-4628-41be-9058-3b94ab5e4e35
+      m_Path: <Keyboard>/2
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Fake Dig
+      m_Flags: 0
+  digUpAction:
+    m_Name: Dig Up
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 58067716-c3b9-4f5f-9705-3c374d5dd36e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 9166c917-4763-433c-bfc3-73628264c01e
+      m_Path: <Gamepad>/buttonNorth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Dig Up
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c96a07f5-8fab-410f-9410-876c4c594b6c
+      m_Path: <Keyboard>/3
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Dig Up
+      m_Flags: 0
+  idleSettings: {fileID: 11400000, guid: db7a108ac9af7f7498d7da11b2a92e61, type: 2}
+  digSettings: {fileID: 11400000, guid: a5315544f2d7cf04ba954789a032561b, type: 2}
+  jumpSettings: {fileID: 11400000, guid: 5fa8ff43ae95ab341bc952d675240ac4, type: 2}
+  fallSettings: {fileID: 11400000, guid: 3fdb8a7fcdd79c24e9c2d2431ff6838f, type: 2}
+  glideSettings: {fileID: 11400000, guid: a1b967defedbfa642905d7b5f5d93dc2, type: 2}
   jumpStopSpeed: 2
   rotationDeadzone: 0.03125
   invertX: 1
@@ -299,6 +371,10 @@ PrefabInstance:
       propertyPath: attachedRigidbody
       value: 
       objectReference: {fileID: 3671483072057889833}
+    - target: {fileID: 6522604769804163952, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059939, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_Name
       value: LocalPlayer
@@ -313,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 5.47
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.z

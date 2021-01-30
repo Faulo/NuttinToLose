@@ -17,6 +17,12 @@ public class PlayerInput : MonoBehaviour {
     InputAction lookAction = new InputAction();
     [SerializeField]
     InputAction jumpAction = new InputAction();
+    [SerializeField]
+    InputAction realDigAction = new InputAction();
+    [SerializeField]
+    InputAction fakeDigAction = new InputAction();
+    [SerializeField]
+    InputAction digUpAction = new InputAction();
 
     Vector2 intendedMove;
     Vector2 intendedLook;
@@ -71,11 +77,17 @@ public class PlayerInput : MonoBehaviour {
         moveAction.Enable();
         lookAction.Enable();
         jumpAction.Enable();
+        realDigAction.Enable();
+        fakeDigAction.Enable();
+        digUpAction.Enable();
     }
     void OnDisable() {
         moveAction.Disable();
         lookAction.Disable();
         jumpAction.Disable();
+        realDigAction.Disable();
+        fakeDigAction.Disable();
+        digUpAction.Disable();
     }
     void Awake() {
         OnValidate();

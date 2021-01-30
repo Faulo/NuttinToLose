@@ -1112,10 +1112,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3437413173279398844, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 3437413173279398847, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
       propertyPath: m_Name
       value: LocalPlayer
@@ -1124,26 +1120,6 @@ PrefabInstance:
       propertyPath: axis
       value: 
       objectReference: {fileID: 4418114178524543547}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: digSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: a5315544f2d7cf04ba954789a032561b, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: fallSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: 3fdb8a7fcdd79c24e9c2d2431ff6838f, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: idleSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: db7a108ac9af7f7498d7da11b2a92e61, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: jumpSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: 5fa8ff43ae95ab341bc952d675240ac4, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: glideSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: a1b967defedbfa642905d7b5f5d93dc2, type: 2}
     - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
       propertyPath: referenceCamera
       value: 
