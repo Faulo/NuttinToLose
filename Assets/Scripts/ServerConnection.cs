@@ -6,11 +6,11 @@ public class ServerConnection : MonoBehaviour {
     [SerializeField]
     ServerSentEventClient client = default;
     [SerializeField]
-    LocalPlayerController localPlayer = default;
+    PlayerController localPlayer = default;
     [SerializeField]
     string localId = default;
     [SerializeField]
-    RemotePlayerController playerPrefab = default;
+    PlayerController playerPrefab = default;
     [SerializeField, Range(0, 5)]
     float updateInterval = 1;
 

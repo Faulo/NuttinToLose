@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterInput : MonoBehaviour {
+public class PlayerInput : MonoBehaviour {
     [SerializeField]
-    LocalPlayerController player = default;
+    PlayerController player = default;
+    [SerializeField]
+    GroundCheck groundCheck = default;
     [SerializeField]
     CinemachineAxisInput axis = default;
     [SerializeField]
@@ -38,6 +40,9 @@ public class CharacterInput : MonoBehaviour {
     [SerializeField]
     bool invertY = false;
 
+    bool canJump => player.data.isGrounded && !player.data.isJumping && !player.data.isGliding;
+    bool canGlide => !player.data.isGrounded && !player.data.isJumping && !player.data.isGliding;
+
     void OnEnable() {
         moveAction.Enable();
         lookAction.Enable();
@@ -53,7 +58,7 @@ public class CharacterInput : MonoBehaviour {
     }
     void OnValidate() {
         if (!player) {
-            player = GetComponentInParent<LocalPlayerController>();
+            player = GetComponentInParent<PlayerController>();
         }
         if (!referenceCamera) {
             referenceCamera = FindObjectOfType<Camera>();
@@ -62,6 +67,7 @@ public class CharacterInput : MonoBehaviour {
 
     void FixedUpdate() {
         UpdateIntentions();
+        player.data.isGrounded = groundCheck.isGrounded;
 
         var position = player.attachedRigidbody.position;
         var currentVelocity = player.attachedRigidbody.velocity;
@@ -75,7 +81,17 @@ public class CharacterInput : MonoBehaviour {
 
         currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref acceleration, accelerationDuration);
         if (intendsJump) {
-            currentVelocity.y = jumpStartSpeed;
+            if (canJump) {
+                player.data.isJumping = true;
+                currentVelocity.y = jumpStartSpeed;
+            }
+            if (canGlide) {
+                player.data.isGliding = true;
+                currentVelocity.y += jumpStartSpeed;
+            }
+        } else {
+            player.data.isJumping = false;
+            player.data.isGliding = false;
         }
 
         player.data.position = position;

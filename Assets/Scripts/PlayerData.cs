@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public class PlayerData {
     public string id;
 
@@ -11,4 +12,7 @@ public class PlayerData {
     public bool isJumping = false;
     public bool isGliding = false;
     public bool isGrounded = false;
+
+    public float verticalSpeed => velocity.y;
+    public float horizontalSpeed => new Vector2(velocity.x, velocity.z).magnitude;
 }
