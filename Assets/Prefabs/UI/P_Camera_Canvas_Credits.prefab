@@ -130,7 +130,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Katharina Broswik
 
-    Nils
+    Nils Schwarz
 
     Laura
 
@@ -614,7 +614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5309691402811544866, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_Name
-      value: P_Text_Menu
+      value: Credits
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
