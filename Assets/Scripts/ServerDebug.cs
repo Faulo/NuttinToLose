@@ -32,6 +32,6 @@ public class ServerDebug : MonoBehaviour {
         }
     }
     void PushMessage() {
-        client.PushEvent("message", JsonUtility.ToJson(new Message { text = messageInput.text }));
+        StartCoroutine(client.PushRoutine("message", JsonUtility.ToJson(new Message { text = messageInput.text })));
     }
 }

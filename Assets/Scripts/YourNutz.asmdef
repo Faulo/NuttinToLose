@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Unity.WebRTC",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Cinemachine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
