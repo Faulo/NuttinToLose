@@ -17,8 +17,6 @@ public class PlayerInput : MonoBehaviour {
     [SerializeField]
     InputAction jumpAction = new InputAction();
 
-    bool isJumping = false;
-
     Vector2 intendedMove;
     Vector2 intendedLook;
     bool intendsJump;
@@ -80,11 +78,7 @@ public class PlayerInput : MonoBehaviour {
         var targetVelocity = new Vector3(direction.x, currentVelocity.y, direction.z);
 
         currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref acceleration, accelerationDuration);
-        ProcessUpwards();
-        if (canJump) {
-            if ()
-        }
-            if (intendsJump) {
+        if (intendsJump) {
             if (canJump) {
                 player.data.isJumping = true;
                 currentVelocity.y = jumpStartSpeed;
