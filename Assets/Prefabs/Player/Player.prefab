@@ -81,10 +81,12 @@ MonoBehaviour:
   isLocal: 0
   data:
     id: 
+    name: 
     speed: 0
     position: {x: 0, y: 0, z: 0}
     angle: 0
     state: 0
+    nuts: 0
   interpolationDuration: 0.25
 --- !u!1001 &6705379391403162779
 PrefabInstance:

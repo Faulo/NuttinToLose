@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour {
         get => data.nuts;
         set {
             if (data.nuts != value) {
-                data.nuts = value;
                 onNutChange?.Invoke(value);
+                data.nuts = value;
             }
         }
     }

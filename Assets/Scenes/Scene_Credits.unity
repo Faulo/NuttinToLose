@@ -400,6 +400,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2869430909107204565, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1956629391}
+    - target: {fileID: 2869430909107204565, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
     - target: {fileID: 4129731002420151629, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
       propertyPath: m_fontSize
       value: 24.5
@@ -506,3 +514,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+--- !u!82 &1956629391 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 978342290439894190, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+  m_PrefabInstance: {fileID: 1956629390}
+  m_PrefabAsset: {fileID: 0}

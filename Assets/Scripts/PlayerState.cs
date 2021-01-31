@@ -5,5 +5,6 @@ public enum PlayerState {
     Falling = 12,
     RealDigging = 20,
     FakeDigging = 21,
-    DiggingUp = 22
+    DiggingUp = 22,
+    DiggingUpFake = 23
 }
