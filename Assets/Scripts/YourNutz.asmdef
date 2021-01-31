@@ -5,7 +5,8 @@
         "Unity.WebRTC",
         "Unity.InputSystem",
         "Cinemachine",
-        "Slothsoft.UnityExtensions.Runtime"
+        "Slothsoft.UnityExtensions.Runtime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -9,14 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19677d5781b22274f97a60ab99cdb133, type: 3}
-  m_Name: Player_Dig
+  m_Script: {fileID: 11500000, guid: f2aff677e32e23d4ea40899147790b72, type: 3}
+  m_Name: SFX_FindRealNut
   m_EditorClassIdentifier: 
-  accelerationDuration: 0.0625
-  rotationDuration: 0.125
-  maximumSpeed: 0
-  forwardBoost: 0
-  upwardsBoost: 0
-  drag: 1
-  gravity: 1
-  digDuration: 1
+  audioPrefab: {fileID: 8003373738391254619, guid: 3c94573f021ada04fa0885fbfef3e68c, type: 3}
+  offset: 0
+  minimumPitch: 1.2
+  maximumPitch: 1.4
+  minimumVolume: 0.95
+  maximumVolume: 1.05
