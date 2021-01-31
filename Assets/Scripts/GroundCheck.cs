@@ -3,8 +3,11 @@ using UnityEngine;
 public class GroundCheck : MonoBehaviour {
     [SerializeField]
     LayerMask groundLayers = default;
+    [SerializeField]
+    LayerMask digLayers = default;
 
     public bool isGrounded;
+    public bool canDig;
     public DigSpot spot;
 
     bool foundGround;
@@ -15,6 +18,11 @@ public class GroundCheck : MonoBehaviour {
         if ((layer & groundLayers.value) == layer) {
             foundGround = true;
             isGrounded = true;
+            if ((layer & digLayers.value) == layer) {
+                canDig = true;
+            } else {
+                canDig = false;
+            }
         }
         if (other.TryGetComponent<DigSpot>(out var spot)) {
             foundSpot = true;
@@ -27,6 +35,7 @@ public class GroundCheck : MonoBehaviour {
             foundGround = false;
         } else {
             isGrounded = false;
+            canDig = false;
         }
         if (foundSpot) {
             foundSpot = false;

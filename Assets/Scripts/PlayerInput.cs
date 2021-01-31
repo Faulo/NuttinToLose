@@ -232,14 +232,14 @@ public class PlayerInput : MonoBehaviour {
                 return;
             }
             // ... or dig!
-            if (intendsRealDig && !groundCheck.spot && player.nutCount > 0) {
+            if (intendsRealDig && groundCheck.canDig && !groundCheck.spot && player.nutCount > 0) {
                 if (player.data.playerState == PlayerState.Idle) {
                     player.data.playerState = PlayerState.RealDigging;
                     digTimer = digDuration;
                     return;
                 }
             }
-            if (intendsFakeDig && !groundCheck.spot) {
+            if (intendsFakeDig && groundCheck.canDig && !groundCheck.spot) {
                 if (player.data.playerState == PlayerState.Idle) {
                     player.data.playerState = PlayerState.FakeDigging;
                     digTimer = digDuration;
