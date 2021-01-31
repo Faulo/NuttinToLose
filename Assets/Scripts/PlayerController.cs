@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour {
         get => data.nuts;
         set {
             if (data.nuts != value) {
-                data.nuts = value;
                 onNutChange?.Invoke(value);
+                data.nuts = value;
             }
         }
     }
@@ -63,6 +63,13 @@ public class PlayerController : MonoBehaviour {
         currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref rotationVelocity, interpolationDuration);
         transform.rotation = Quaternion.Euler(0, currentAngle, 0);
     }
+
+    public void TeleportTo(Vector3 position, Quaternion rotation) {
+        attachedRigidbody.position = position;
+        attachedRigidbody.rotation = rotation;
+        UpdateStorage();
+    }
+
     void UpdateStorage() {
         data.position = attachedRigidbody.position;
         data.angle = attachedRigidbody.rotation.eulerAngles.y;

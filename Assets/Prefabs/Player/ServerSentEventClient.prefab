@@ -43,9 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed75338ea556a0c4ba7df0b3e500c394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  api: 1
-  pushUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=push&name=webrtc-YourNutz
-  pullUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=pull&name=webrtc-YourNutz&lastId=
+  settings: {fileID: 11400000, guid: e28f0cefa216e8748ae8fb9e5a896dd3, type: 2}
   lastEvent:
     id: 0
     type: 

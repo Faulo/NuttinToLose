@@ -1,3 +1,4 @@
+using System;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,6 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour {
     [SerializeField]
     PlayerController player = default;
+    [SerializeField]
+    ServerConnection server = default;
     [SerializeField]
     GroundCheck groundCheck = default;
     [SerializeField]
@@ -85,6 +88,7 @@ public class PlayerInput : MonoBehaviour {
         realDigAction.Enable();
         fakeDigAction.Enable();
         digUpAction.Enable();
+        server.onStateEnter += HandleStateChange;
     }
     void OnDisable() {
         moveAction.Disable();
@@ -93,6 +97,24 @@ public class PlayerInput : MonoBehaviour {
         realDigAction.Disable();
         fakeDigAction.Disable();
         digUpAction.Disable();
+        server.onStateEnter -= HandleStateChange;
+    }
+    void HandleStateChange(WorldState state) {
+        switch (state) {
+            case WorldState.Inactive:
+                break;
+            case WorldState.Lobby:
+                break;
+            case WorldState.Fall:
+                break;
+            case WorldState.Winter:
+                break;
+            case WorldState.HighScore:
+                enabled = false;
+                break;
+            default:
+                throw new NotImplementedException(state.ToString());
+        }
     }
     void Awake() {
         OnValidate();
@@ -101,8 +123,11 @@ public class PlayerInput : MonoBehaviour {
         if (!player) {
             player = GetComponentInParent<PlayerController>();
         }
+        if (!server) {
+            server = FindObjectOfType<ServerConnection>();
+        }
         if (!referenceCamera) {
-            referenceCamera = FindObjectOfType<Camera>();
+            referenceCamera = Camera.main;
         }
     }
 
@@ -144,6 +169,36 @@ public class PlayerInput : MonoBehaviour {
     }
 
     void ProcessJump(ref Vector3 velocity) {
+        // if we're digging, we gotta keep digging
+        if (player.data.isDigging) {
+            if (player.data.playerState == PlayerState.RealDigging && !groundCheck.spot) {
+                if (digTimer > 0) {
+                    digTimer -= Time.deltaTime;
+                    return;
+                } else {
+                    player.RealDig();
+                }
+            }
+            if (player.data.playerState == PlayerState.FakeDigging && !groundCheck.spot) {
+                if (digTimer > 0) {
+                    digTimer -= Time.deltaTime;
+                    return;
+                } else {
+                    player.FakeDig();
+                }
+            }
+            if (player.data.playerState == PlayerState.DiggingUp && groundCheck.spot) {
+                if (digTimer > 0) {
+                    digTimer -= Time.deltaTime;
+                    return;
+                } else {
+                    player.DigUp(groundCheck.spot);
+                }
+            }
+            // we're done digging
+            player.data.playerState = PlayerState.Idle;
+        }
+
         // we're jumping, so we might wanna stop
         if (player.data.playerState == PlayerState.Jumping) {
             if (!intendsJump) {
@@ -181,51 +236,25 @@ public class PlayerInput : MonoBehaviour {
                 if (player.data.playerState == PlayerState.Idle) {
                     player.data.playerState = PlayerState.RealDigging;
                     digTimer = digDuration;
-                }
-                if (player.data.playerState == PlayerState.RealDigging) {
-                    if (digTimer > 0) {
-                        digTimer -= Time.deltaTime;
-                        return;
-                    } else {
-                        player.RealDig();
-                        player.data.playerState = PlayerState.Idle;
-                        return;
-                    }
+                    return;
                 }
             }
             if (intendsFakeDig && !groundCheck.spot) {
                 if (player.data.playerState == PlayerState.Idle) {
                     player.data.playerState = PlayerState.FakeDigging;
                     digTimer = digDuration;
-                }
-                if (player.data.playerState == PlayerState.FakeDigging) {
-                    if (digTimer > 0) {
-                        digTimer -= Time.deltaTime;
-                        return;
-                    } else {
-                        player.FakeDig();
-                        player.data.playerState = PlayerState.Idle;
-                        return;
-                    }
+                    return;
                 }
             }
             if (intendsDigUp && groundCheck.spot) {
                 if (player.data.playerState == PlayerState.Idle) {
                     player.data.playerState = PlayerState.DiggingUp;
                     digTimer = digDuration;
-                }
-                if (player.data.playerState == PlayerState.DiggingUp) {
-                    if (digTimer > 0) {
-                        digTimer -= Time.deltaTime;
-                        return;
-                    } else {
-                        player.DigUp(groundCheck.spot);
-                        player.data.playerState = PlayerState.Idle;
-                        return;
-                    }
+                    return;
                 }
             }
 
+            // nothing more to do when grounded
             player.data.playerState = PlayerState.Idle;
             return;
         }

@@ -6,6 +6,6 @@ public class LoadScene : ScriptableObject {
     public string sceneToLoad;
 
     public void Load() {
-        SceneManager.LoadScene(sceneToLoad);
+        SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
     }
 }
