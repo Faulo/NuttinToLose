@@ -835,6 +835,7 @@ GameObject:
   - component: {fileID: 6781475410939463185}
   - component: {fileID: 2858984775195586008}
   - component: {fileID: 6660931423722214151}
+  - component: {fileID: 6907813873637802850}
   m_Layer: 5
   m_Name: P_Camera_Canvas_Highscore
   m_TagString: Untagged
@@ -928,6 +929,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6907813873637802850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7548456100790655431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da8ed848025b1b448d123f7e0cc75bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  server: {fileID: 0}
+  rowContainer: {fileID: 5079979999942918614}
+  rowPrefab: {fileID: 6659379572600546872, guid: b5017b177f31d0f449fb673198b719f4, type: 3}
 --- !u!1 &8533400656133668631
 GameObject:
   m_ObjectHideFlags: 0
