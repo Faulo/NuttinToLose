@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class HighscoreRow : MonoBehaviour
-{
+public class HighscoreRow : MonoBehaviour {
     [SerializeField]
     TextMeshProUGUI placement = default;
     [SerializeField]
     TextMeshProUGUI nickname = default;
     [SerializeField]
     TextMeshProUGUI nuts = default;
-    void Start()
-    {
+    void Start() {
         placement.text = "x";
         nickname.text = "Nickname";
         nuts.text = "0";
