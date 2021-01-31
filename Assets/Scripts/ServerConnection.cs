@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 public class ServerConnection : MonoBehaviour {
@@ -13,8 +14,12 @@ public class ServerConnection : MonoBehaviour {
     PlayerController playerPrefab = default;
     [SerializeField, Range(0, 5)]
     float updateInterval = 1;
+    [SerializeField, Expandable]
+    DigSpot spotPrefab = default;
 
     Dictionary<string, PlayerController> spawnedPlayers = new Dictionary<string, PlayerController>();
+
+    Dictionary<string, DigSpot> digs = new Dictionary<string, DigSpot>();
 
 
     void Start() {
@@ -23,7 +28,47 @@ public class ServerConnection : MonoBehaviour {
         spawnedPlayers[localId] = localPlayer;
         client.onMessage += HandleMessage;
 
+        localPlayer.onRealDig += HandleRealDig;
+        localPlayer.onFakeDig += HandleFakeDig;
+        localPlayer.onDigUp += HandleDigUp;
+
         StartCoroutine(UpdatePlayerRoutine());
+    }
+
+    void HandleDigUp(DigSpot spot) {
+        string id = spot.data.id;
+        if (digs.Remove(id)) {
+            StartCoroutine(client.PushRoutine("remove-dig", StringifyDig(spot)));
+        }
+        spot.GetDugUp();
+    }
+
+    void HandleFakeDig() {
+        var data = new DigData() {
+            id = System.Guid.NewGuid().ToString(),
+            position = localPlayer.position,
+            isReal = false
+        };
+        var spot = CreateDig(data);
+        digs[data.id] = spot;
+        StartCoroutine(client.PushRoutine("create-dig", StringifyDig(spot)));
+    }
+
+    void HandleRealDig() {
+        var data = new DigData() {
+            id = System.Guid.NewGuid().ToString(),
+            position = localPlayer.position,
+            isReal = true
+        };
+        var spot = CreateDig(data);
+        digs[data.id] = spot;
+        StartCoroutine(client.PushRoutine("create-dig", StringifyDig(spot)));
+    }
+
+    DigSpot CreateDig(DigData data) {
+        var spot = Instantiate(spotPrefab, data.position, Quaternion.identity);
+        spot.data = data;
+        return spot;
     }
 
     IEnumerator UpdatePlayerRoutine() {
@@ -44,6 +89,12 @@ public class ServerConnection : MonoBehaviour {
             case "update":
                 ParsePlayer(eve.data);
                 break;
+            case "create-dig":
+                ParseCreateDig(eve.data);
+                break;
+            case "remove-dig":
+                ParseRemoveDig(eve.data);
+                break;
         }
     }
 
@@ -52,8 +103,7 @@ public class ServerConnection : MonoBehaviour {
     }
     void ParsePlayer(string text) {
         var data = JsonUtility.FromJson<PlayerData>(text);
-        if (IsLocal(data.id)) {
-
+        if (IsLocalPlayer(data.id)) {
         } else {
             UpdatePlayer(data);
         }
@@ -66,5 +116,22 @@ public class ServerConnection : MonoBehaviour {
         }
         player.data = data;
     }
-    public bool IsLocal(string id) => localId == id;
+    public bool IsLocalPlayer(string id) => localId == id;
+
+    string StringifyDig(DigSpot spot) {
+        return JsonUtility.ToJson(spot.data);
+    }
+    void ParseCreateDig(string text) {
+        var data = JsonUtility.FromJson<DigData>(text);
+        if (!digs.ContainsKey(data.id)) {
+            digs[data.id] = CreateDig(data);
+        }
+    }
+    void ParseRemoveDig(string text) {
+        var data = JsonUtility.FromJson<DigData>(text);
+        if (digs.TryGetValue(data.id, out var spot)) {
+            digs.Remove(data.id);
+            spot.GetDugUp();
+        }
+    }
 }

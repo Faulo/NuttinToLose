@@ -48,3 +48,4 @@ MonoBehaviour:
   localId: 
   playerPrefab: {fileID: 2794349412666252739, guid: 312b1046af7c5e944b7514701ae34d61, type: 3}
   updateInterval: 0.01
+  spotPrefab: {fileID: 8719546882227100746, guid: 950a1120737335d40845301ff67d88aa, type: 3}

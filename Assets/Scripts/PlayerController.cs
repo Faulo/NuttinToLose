@@ -1,6 +1,11 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    public event Action onRealDig;
+    public event Action onFakeDig;
+    public event Action<DigSpot> onDigUp;
+
     [SerializeField]
     public Rigidbody attachedRigidbody = default;
     [SerializeField]
@@ -13,6 +18,8 @@ public class PlayerController : MonoBehaviour {
     float interpolationDuration = 0;
     Vector3 positionVelocity;
     float rotationVelocity;
+
+    public Vector3 position => transform.position;
 
     void Awake() {
         OnValidate();
@@ -48,5 +55,15 @@ public class PlayerController : MonoBehaviour {
         data.position = attachedRigidbody.position;
         data.angle = attachedRigidbody.rotation.eulerAngles.y;
         data.speed = new Vector2(attachedRigidbody.velocity.x, attachedRigidbody.velocity.z).magnitude;
+    }
+
+    public void RealDig() {
+        onRealDig?.Invoke();
+    }
+    public void FakeDig() {
+        onFakeDig?.Invoke();
+    }
+    public void DigUp(DigSpot spot) {
+        onDigUp?.Invoke(spot);
     }
 }

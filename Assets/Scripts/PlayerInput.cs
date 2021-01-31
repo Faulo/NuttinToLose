@@ -27,6 +27,9 @@ public class PlayerInput : MonoBehaviour {
     Vector2 intendedMove;
     Vector2 intendedLook;
     bool intendsJump;
+    bool intendsRealDig;
+    bool intendsFakeDig;
+    bool intendsDigUp;
 
     Vector3 acceleration;
     float rotationVelocity;
@@ -63,6 +66,7 @@ public class PlayerInput : MonoBehaviour {
     float maximumSpeed => currentSettings.maximumSpeed;
     float forwardBoost => currentSettings.forwardBoost;
     float upwardsBoost => currentSettings.upwardsBoost;
+    float digDuration => currentSettings.digDuration;
     bool isGrounded => groundCheck.isGrounded;
 
     [Header("Camera")]
@@ -72,6 +76,7 @@ public class PlayerInput : MonoBehaviour {
     bool invertY = false;
 
     bool canStartJump;
+    float digTimer;
 
     void OnEnable() {
         moveAction.Enable();
@@ -171,6 +176,56 @@ public class PlayerInput : MonoBehaviour {
                 velocity += Vector3.up * upwardsBoost;
                 return;
             }
+            // ... or dig!
+            if (intendsRealDig && !groundCheck.spot) {
+                if (player.data.playerState == PlayerState.Idle) {
+                    player.data.playerState = PlayerState.RealDigging;
+                    digTimer = digDuration;
+                }
+                if (player.data.playerState == PlayerState.RealDigging) {
+                    if (digTimer > 0) {
+                        digTimer -= Time.deltaTime;
+                        return;
+                    } else {
+                        player.RealDig();
+                        player.data.playerState = PlayerState.Idle;
+                        return;
+                    }
+                }
+            }
+            if (intendsFakeDig && !groundCheck.spot) {
+                if (player.data.playerState == PlayerState.Idle) {
+                    player.data.playerState = PlayerState.FakeDigging;
+                    digTimer = digDuration;
+                }
+                if (player.data.playerState == PlayerState.FakeDigging) {
+                    if (digTimer > 0) {
+                        digTimer -= Time.deltaTime;
+                        return;
+                    } else {
+                        player.FakeDig();
+                        player.data.playerState = PlayerState.Idle;
+                        return;
+                    }
+                }
+            }
+            if (intendsDigUp && groundCheck.spot) {
+                if (player.data.playerState == PlayerState.Idle) {
+                    player.data.playerState = PlayerState.DiggingUp;
+                    digTimer = digDuration;
+                }
+                if (player.data.playerState == PlayerState.DiggingUp) {
+                    if (digTimer > 0) {
+                        digTimer -= Time.deltaTime;
+                        return;
+                    } else {
+                        player.DigUp(groundCheck.spot);
+                        player.data.playerState = PlayerState.Idle;
+                        return;
+                    }
+                }
+            }
+
             player.data.playerState = PlayerState.Idle;
             return;
         }
@@ -190,6 +245,9 @@ public class PlayerInput : MonoBehaviour {
         intendedMove = moveAction.ReadValue<Vector2>();
         intendedLook = lookAction.ReadValue<Vector2>();
         intendsJump = jumpAction.phase == InputActionPhase.Started;
+        intendsRealDig = realDigAction.phase == InputActionPhase.Started;
+        intendsFakeDig = fakeDigAction.phase == InputActionPhase.Started;
+        intendsDigUp = digUpAction.phase == InputActionPhase.Started;
         if (!intendsJump) {
             canStartJump = true;
         }
