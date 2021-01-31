@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogMode: 2
+  m_FogDensity: 0.005
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -37,8 +37,8 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_Sun: {fileID: 1334312543}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: e7247a7a46f196d4ab9e586b266b6d07, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 1d1cd3c7463811b4b94f94ee38ce4a1d, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1068,7 +1068,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!108 &1334312543
 Light:
@@ -1121,7 +1121,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1227,11 +1227,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bec7c64fd1d5a3742b1f9bf0461df1c5, type: 3}
---- !u!54 &1394262793 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 1127009353998329378, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
-  m_PrefabInstance: {fileID: 4418114178709894491}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1529595051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,14 +1651,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2432567091756347663, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
-      propertyPath: attachedRigidbody
-      value: 
-      objectReference: {fileID: 1394262793}
-    - target: {fileID: 3943650167786529337, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
-      propertyPath: manager
-      value: 
-      objectReference: {fileID: 4418114178709894492}
     - target: {fileID: 4418114178039569458, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1712,20 +1699,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Important Stuff
       objectReference: {fileID: 0}
-    - target: {fileID: 4814254190092383758, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
-      propertyPath: currentSeason
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
---- !u!114 &4418114178709894492 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4814254190092383758, guid: 1bfb63ccb75ce664e816dd3f045b5b12, type: 3}
-  m_PrefabInstance: {fileID: 4418114178709894491}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feefa2d982f4e894eb8a68b0d87b3c69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
