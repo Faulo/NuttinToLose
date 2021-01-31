@@ -592,6 +592,7 @@ Transform:
   - {fileID: 1361334475838138803}
   - {fileID: 4418114176947001685}
   - {fileID: 4418114178524543546}
+  - {fileID: 3547276730520308175}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1061,6 +1062,50 @@ MonoBehaviour:
   m_LegacyHeightOffset: 3.4028235e+38
   m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 0
+--- !u!1 &6172544080444650916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3547276730520308175}
+  - component: {fileID: 4814254190092383758}
+  m_Layer: 0
+  m_Name: SeasonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3547276730520308175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172544080444650916}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4418114178039569458}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4814254190092383758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6172544080444650916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feefa2d982f4e894eb8a68b0d87b3c69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSeason: 2
 --- !u!1001 &4418114177235825163
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1112,10 +1157,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3437413173279398844, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 3437413173279398847, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
       propertyPath: m_Name
       value: LocalPlayer
@@ -1124,26 +1165,6 @@ PrefabInstance:
       propertyPath: axis
       value: 
       objectReference: {fileID: 4418114178524543547}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: digSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: a5315544f2d7cf04ba954789a032561b, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: fallSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: 3fdb8a7fcdd79c24e9c2d2431ff6838f, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: idleSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: db7a108ac9af7f7498d7da11b2a92e61, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: jumpSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: 5fa8ff43ae95ab341bc952d675240ac4, type: 2}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: glideSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: a1b967defedbfa642905d7b5f5d93dc2, type: 2}
     - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
       propertyPath: referenceCamera
       value: 
