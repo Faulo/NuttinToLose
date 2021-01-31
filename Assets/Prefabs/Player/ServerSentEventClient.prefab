@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6436531550522637699}
   - component: {fileID: 6436531550522637698}
   m_Layer: 0
-  m_Name: ServerConnection
+  m_Name: ServerSentEventClient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,8 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed75338ea556a0c4ba7df0b3e500c394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageInput: {fileID: 0}
-  messageOutput: {fileID: 0}
+  api: 1
+  pushUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=push&name=webrtc-YourNutz
+  pullUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=pull&name=webrtc-YourNutz&lastId=
   lastEvent:
     id: 0
     type: 
