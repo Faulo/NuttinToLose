@@ -1520,38 +1520,6 @@ PrefabInstance:
       propertyPath: localPlayer
       value: 
       objectReference: {fileID: 2432567091756347663}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_Id
-      value: 5958d8e9-c414-4d39-8fc8-194c57c0d9f7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_Name
-      value: Start
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_ExpectedControlType
-      value: Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_SingletonActionBindings.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 62a11847-0164-4a1c-a4df-50a888771b27
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Gamepad>/start
-      objectReference: {fileID: 0}
-    - target: {fileID: 6238338960868357703, guid: e43ca289fdb201c4289664545911afeb, type: 3}
-      propertyPath: startAction.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Start
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e43ca289fdb201c4289664545911afeb, type: 3}
 --- !u!114 &4418114176835853514 stripped

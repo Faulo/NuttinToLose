@@ -38,6 +38,14 @@ public class ServerConnection : MonoBehaviour {
     [SerializeField]
     InputAction startAction = new InputAction();
 
+    [Header("Time")]
+    [SerializeField, Range(0, 1000)]
+    float fallDuration = 120;
+    [SerializeField, Range(0, 1000)]
+    float winterDuration = 120;
+    [SerializeField]
+    ServerTimer timerInstance = default;
+
     public WorldState state {
         get => stateCache;
         private set {
@@ -98,10 +106,12 @@ public class ServerConnection : MonoBehaviour {
             case WorldState.Fall:
                 localPlayer.nutCount = startingNutCount;
                 ResetPlayer();
+                StartCoroutine(StartTimer(fallDuration, WorldState.Winter));
                 break;
             case WorldState.Winter:
                 localPlayer.nutCount = 0;
                 ResetPlayer();
+                StartCoroutine(StartTimer(winterDuration, WorldState.HighScore));
                 break;
             case WorldState.HighScore:
                 ResetPlayer();
@@ -109,6 +119,15 @@ public class ServerConnection : MonoBehaviour {
             default:
                 throw new NotImplementedException(state.ToString());
         }
+    }
+    IEnumerator StartTimer(float duration, WorldState state) {
+        timerInstance.time = duration;
+        while (timerInstance.time > 0) {
+            yield return null;
+            timerInstance.time -= Time.deltaTime;
+        }
+        yield return new WaitForFixedUpdate();
+        this.state = state;
     }
     void HandleExitState(WorldState state) {
         switch (state) {
