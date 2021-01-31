@@ -1,3 +1,4 @@
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,12 @@ public class PlayerInput : MonoBehaviour {
     InputAction lookAction = new InputAction();
     [SerializeField]
     InputAction jumpAction = new InputAction();
+    [SerializeField]
+    InputAction realDigAction = new InputAction();
+    [SerializeField]
+    InputAction fakeDigAction = new InputAction();
+    [SerializeField]
+    InputAction digUpAction = new InputAction();
 
     Vector2 intendedMove;
     Vector2 intendedLook;
@@ -24,32 +31,63 @@ public class PlayerInput : MonoBehaviour {
     Vector3 acceleration;
     float rotationVelocity;
 
-    [SerializeField, Range(0, 1)]
-    float accelerationDuration = 0;
-    [SerializeField, Range(0, 1)]
-    float rotationDuration = 0;
+    [SerializeField, Expandable]
+    PlayerSettings idleSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings digSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings jumpSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings fallSettings = default;
+    [SerializeField, Expandable]
+    PlayerSettings glideSettings = default;
+
     [SerializeField, Range(0, 100)]
-    public float maximumSpeed = 10;
-    [SerializeField, Range(0, 100)]
-    float jumpStartSpeed = 10;
+    float jumpStopSpeed = 2;
+    [SerializeField, Range(0, 1)]
+    float rotationDeadzone = 0;
+
+    PlayerSettings currentSettings => player.data.playerState switch {
+        PlayerState.Idle => idleSettings,
+        PlayerState.Jumping => jumpSettings,
+        PlayerState.Gliding => glideSettings,
+        PlayerState.Falling => fallSettings,
+        PlayerState.RealDigging => digSettings,
+        PlayerState.FakeDigging => digSettings,
+        PlayerState.DiggingUp => digSettings,
+        _ => throw new System.NotImplementedException(),
+    };
+
+    float accelerationDuration => currentSettings.accelerationDuration;
+    float rotationDuration => currentSettings.rotationDuration;
+    float maximumSpeed => currentSettings.maximumSpeed;
+    float forwardBoost => currentSettings.forwardBoost;
+    float upwardsBoost => currentSettings.upwardsBoost;
+    bool isGrounded => groundCheck.isGrounded;
+
     [Header("Camera")]
     [SerializeField]
     bool invertX = false;
     [SerializeField]
     bool invertY = false;
 
-    bool canJump => player.data.isGrounded && !player.data.isJumping && !player.data.isGliding;
-    bool canGlide => !player.data.isGrounded && !player.data.isJumping && !player.data.isGliding;
+    bool canStartJump;
 
     void OnEnable() {
         moveAction.Enable();
         lookAction.Enable();
         jumpAction.Enable();
+        realDigAction.Enable();
+        fakeDigAction.Enable();
+        digUpAction.Enable();
     }
     void OnDisable() {
         moveAction.Disable();
         lookAction.Disable();
         jumpAction.Disable();
+        realDigAction.Disable();
+        fakeDigAction.Disable();
+        digUpAction.Disable();
     }
     void Awake() {
         OnValidate();
@@ -65,7 +103,6 @@ public class PlayerInput : MonoBehaviour {
 
     void FixedUpdate() {
         UpdateIntentions();
-        player.data.isGrounded = groundCheck.isGrounded;
 
         var position = player.attachedRigidbody.position;
         var currentVelocity = player.attachedRigidbody.velocity;
@@ -78,23 +115,13 @@ public class PlayerInput : MonoBehaviour {
         var targetVelocity = new Vector3(direction.x, currentVelocity.y, direction.z);
 
         currentVelocity = Vector3.SmoothDamp(currentVelocity, targetVelocity, ref acceleration, accelerationDuration);
-        if (intendsJump) {
-            if (canJump) {
-                player.data.isJumping = true;
-                currentVelocity.y = jumpStartSpeed;
-            }
-            if (canGlide) {
-                player.data.isGliding = true;
-                currentVelocity.y += jumpStartSpeed;
-            }
-        } else {
-            player.data.isJumping = false;
-            player.data.isGliding = false;
-        }
 
-        player.data.position = position;
-        player.data.velocity = currentVelocity;
-        if (direction != Vector3.zero) {
+        ProcessJump(ref currentVelocity);
+
+        currentVelocity += Physics.gravity * currentSettings.gravity * Time.deltaTime;
+
+        player.attachedRigidbody.velocity = currentVelocity;
+        if (direction.magnitude > rotationDeadzone) {
             float targetRotation = Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
             currentRotation = Mathf.SmoothDampAngle(currentRotation, targetRotation, ref rotationVelocity, rotationDuration);
         }
@@ -106,13 +133,65 @@ public class PlayerInput : MonoBehaviour {
             ? -intendedLook.y
             : intendedLook.y;
 
-        player.data.rotation = Quaternion.Euler(0, currentRotation, 0);
-        player.UpdateState();
+        player.attachedRigidbody.rotation = Quaternion.Euler(0, currentRotation, 0);
+
+        player.attachedRigidbody.drag = currentSettings.drag;
+    }
+
+    void ProcessJump(ref Vector3 velocity) {
+        // we're jumping, so we might wanna stop
+        if (player.data.playerState == PlayerState.Jumping) {
+            if (!intendsJump) {
+                player.data.playerState = PlayerState.Falling;
+                velocity.y = jumpStopSpeed;
+                return;
+            }
+            if (velocity.y < jumpStopSpeed) {
+                player.data.playerState = PlayerState.Falling;
+                return;
+            }
+            return;
+        }
+
+        //we're gliding, so we might wanna stop
+        if (player.data.playerState == PlayerState.Gliding) {
+            if (!intendsJump || isGrounded) {
+                player.data.playerState = PlayerState.Falling;
+                return;
+            }
+            return;
+        }
+
+        // we're grounded, so we might wanna jump
+        if (isGrounded) {
+            if (intendsJump && canStartJump) {
+                player.data.playerState = PlayerState.Jumping;
+                canStartJump = false;
+                velocity += transform.forward * forwardBoost;
+                velocity += Vector3.up * upwardsBoost;
+                return;
+            }
+            player.data.playerState = PlayerState.Idle;
+            return;
+        }
+
+        // we're falling, so we might wanna glide
+        if (intendsJump && canStartJump) {
+            player.data.playerState = PlayerState.Gliding;
+            canStartJump = false;
+            velocity += transform.forward * forwardBoost;
+            velocity += Vector3.up * upwardsBoost;
+            return;
+        }
+        player.data.playerState = PlayerState.Falling;
     }
 
     void UpdateIntentions() {
         intendedMove = moveAction.ReadValue<Vector2>();
         intendedLook = lookAction.ReadValue<Vector2>();
         intendsJump = jumpAction.phase == InputActionPhase.Started;
+        if (!intendsJump) {
+            canStartJump = true;
+        }
     }
 }

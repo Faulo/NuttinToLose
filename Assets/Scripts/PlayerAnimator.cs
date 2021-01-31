@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour {
     enum Parameters {
-        horizontalSpeed,
-        verticalSpeed,
-        isGrounded,
-        isJumping,
-        isGliding
+        state,
+        speed,
     }
     [SerializeField]
     PlayerController player = default;
@@ -25,10 +22,7 @@ public class PlayerAnimator : MonoBehaviour {
         }
     }
     void Update() {
-        animator.SetFloat(nameof(Parameters.horizontalSpeed), player.data.horizontalSpeed);
-        animator.SetFloat(nameof(Parameters.verticalSpeed), player.data.verticalSpeed);
-        animator.SetBool(nameof(Parameters.isGrounded), player.data.isGrounded);
-        animator.SetBool(nameof(Parameters.isJumping), player.data.isJumping);
-        animator.SetBool(nameof(Parameters.isGliding), player.data.isGliding);
+        animator.SetFloat(nameof(Parameters.speed), player.data.speed);
+        animator.SetInteger(nameof(Parameters.state), player.data.state);
     }
 }

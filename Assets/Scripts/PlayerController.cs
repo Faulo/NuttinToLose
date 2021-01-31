@@ -8,6 +8,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     public PlayerData data = new PlayerData();
 
+    [Header("Remote Settings")]
+    [SerializeField, Range(0, 1)]
+    float interpolationDuration = 0;
+    Vector3 positionVelocity;
+    float rotationVelocity;
+
     void Awake() {
         OnValidate();
     }
@@ -18,19 +24,29 @@ public class PlayerController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        if (!isLocal) {
+        if (isLocal) {
             UpdateStorage();
+        } else {
+            UpdateState();
         }
     }
 
-    public void UpdateState() {
-        attachedRigidbody.position = data.position;
-        attachedRigidbody.rotation = data.rotation;
-        attachedRigidbody.velocity = data.velocity;
+    void UpdateState() {
+        // position
+        var currentPosition = transform.position;
+        var targetPosition = data.position;
+        currentPosition = Vector3.SmoothDamp(currentPosition, targetPosition, ref positionVelocity, interpolationDuration);
+        transform.position = currentPosition;
+
+        // rotation
+        float currentAngle = transform.rotation.eulerAngles.y;
+        float targetAngle = data.angle;
+        currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref rotationVelocity, interpolationDuration);
+        transform.rotation = Quaternion.Euler(0, currentAngle, 0);
     }
-    public void UpdateStorage() {
+    void UpdateStorage() {
         data.position = attachedRigidbody.position;
-        data.rotation = attachedRigidbody.rotation;
-        data.velocity = attachedRigidbody.velocity;
+        data.angle = attachedRigidbody.rotation.eulerAngles.y;
+        data.speed = new Vector2(attachedRigidbody.velocity.x, attachedRigidbody.velocity.z).magnitude;
     }
 }

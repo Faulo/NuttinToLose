@@ -5,14 +5,24 @@ using UnityEngine;
 public class PlayerData {
     public string id;
 
-    public Vector3 position = Vector3.zero;
-    public Quaternion rotation = Quaternion.identity;
-    public Vector3 velocity = Vector3.zero;
+    public float speed;
+    public Vector3 position;
+    public float angle;
+    public int state;
+    public PlayerState playerState {
+        get => (PlayerState)state;
+        set => state = (int)value;
+    }
 
-    public bool isJumping = false;
-    public bool isGliding = false;
-    public bool isGrounded = false;
+    public bool isJumping => playerState == PlayerState.Jumping;
+    public bool isGliding => playerState == PlayerState.Gliding;
+    public bool isFalling => playerState == PlayerState.Falling;
+    public bool isDiggingUp => playerState == PlayerState.DiggingUp;
+    public bool isFakeDigging => playerState == PlayerState.FakeDigging;
+    public bool isRealDigging => playerState == PlayerState.RealDigging;
 
-    public float verticalSpeed => velocity.y;
-    public float horizontalSpeed => new Vector2(velocity.x, velocity.z).magnitude;
+    public bool isDigging => isRealDigging || isFakeDigging || isDiggingUp;
+    public bool isAirborne => isJumping || isGliding || !isFalling;
+
+    public Quaternion rotation => Quaternion.Euler(0, angle, 0);
 }
