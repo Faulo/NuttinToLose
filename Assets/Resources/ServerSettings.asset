@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26f4b4f34f7da5439091b3a7e06bf89, type: 3}
   m_Name: ServerSettings
   m_EditorClassIdentifier: 
-  api: 2
+  api: 1
   pushUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=push
   pullUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=pull
   roomName: YourNutz
   playerName: "Bh\xF6rnchen"
+  isOffline: 0
