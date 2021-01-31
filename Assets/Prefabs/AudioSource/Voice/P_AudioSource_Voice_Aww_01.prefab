@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1402694934375413975}
   - component: {fileID: 8003373738391254619}
   m_Layer: 0
-  m_Name: P_AudioSource_Aww_01
+  m_Name: P_AudioSource_Voice_Aww_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

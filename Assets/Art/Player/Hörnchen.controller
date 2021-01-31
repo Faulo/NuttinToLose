@@ -37,7 +37,9 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -5206431183016525664}
+  - {fileID: 3802496207272965217}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -114,7 +116,9 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 2166070321922706117}
+  - {fileID: 3300495583827257541}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -129,6 +133,25 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-5206431183016525664
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 665d4258f29ba1b4da39d637025d739b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioPrefab: {fileID: 8003373738391254619, guid: 33c224a9762924c459cc021ca7b0762d, type: 3}
+  stopOnExit: 0
+  offset: 0
+  minimumPitch: 1.5
+  maximumPitch: 2
+  minimumVolume: 0.95
+  maximumVolume: 1.05
 --- !u!1101 &-4258033343745092102
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -291,6 +314,25 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
+--- !u!114 &2166070321922706117
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 665d4258f29ba1b4da39d637025d739b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioPrefab: {fileID: 4163345851703440361, guid: 11fa5213d7b065643bffc2dbb420bbe1, type: 3}
+  stopOnExit: 0
+  offset: 0.05
+  minimumPitch: 0.8
+  maximumPitch: 1.2
+  minimumVolume: 0.95
+  maximumVolume: 1.05
 --- !u!1101 &2249729422788747540
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -316,6 +358,34 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
+--- !u!114 &3300495583827257541
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f0bb95d7eeac54586d7ed82666250b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePrefab: {fileID: 7473313242657013259, guid: e9483bb53be5c674a872f421c5f04b6b, type: 3}
+  stopOnExit: 1
+--- !u!114 &3802496207272965217
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f0bb95d7eeac54586d7ed82666250b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePrefab: {fileID: 7473313242657013259, guid: d9724d9eb255b574a80b697bccc3377c, type: 3}
+  stopOnExit: 1
 --- !u!206 &3803548729168662188
 BlendTree:
   m_ObjectHideFlags: 1

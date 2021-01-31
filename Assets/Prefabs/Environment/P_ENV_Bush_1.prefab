@@ -1,5 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< HEAD
 --- !u!64 &2581999966027393566
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28,6 +29,8 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5958362384829529401, guid: dc15d7eb775f15b47af605f0823aa7c7, type: 3}
+=======
+>>>>>>> origin/sound
 --- !u!1001 &1871473076074620114
 PrefabInstance:
   m_ObjectHideFlags: 0

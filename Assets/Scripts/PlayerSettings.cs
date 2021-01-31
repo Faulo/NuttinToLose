@@ -17,4 +17,6 @@ public class PlayerSettings : ScriptableObject {
     public float drag = 0;
     [SerializeField, Range(0, 10)]
     public float gravity = 1;
+    [SerializeField, Range(0, 10)]
+    public float digDuration = 1;
 }

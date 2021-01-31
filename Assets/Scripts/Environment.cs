@@ -1,3 +1,4 @@
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 
 public class Environment : MonoBehaviour {
@@ -43,11 +44,24 @@ public class Environment : MonoBehaviour {
         obj.SetActive(true);
         obj.transform.localPosition = Vector3.zero;
         obj.isStatic = true;
-        if (obj.TryGetComponent<MeshFilter>(out var filter)) {
-            if (!obj.TryGetComponent<MeshCollider>(out var collider)) {
-                collider = obj.AddComponent<MeshCollider>();
-            }
-            collider.sharedMesh = filter.sharedMesh;
+    }
+#if UNITY_EDITOR
+    [UnityEditor.CustomEditor(typeof(Environment))]
+    class EnvironmentEditor : RuntimeEditorTools<Environment> {
+        protected override void DrawEditorTools() {
+            DrawButton("Remove MeshCollider", () => {
+                component.SetupCollider(component.fallInstance);
+                component.SetupCollider(component.winterInstance);
+            });
         }
     }
+    void SetupCollider(GameObject obj) {
+        if (!obj) {
+            return;
+        }
+        if (obj.TryGetComponent<MeshCollider>(out var collider)) {
+            DestroyImmediate(collider);
+        }
+    }
+#endif
 }

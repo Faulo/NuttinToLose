@@ -3,9 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class ServerSentEventClient : MonoBehaviour {
+    enum RequestAPI {
+        MicrosoftWebRequest,
+        UnityWebRequest
+    }
     class PollState {
         public HttpWebRequest request;
         public bool isDone;
@@ -19,6 +25,8 @@ public class ServerSentEventClient : MonoBehaviour {
     public event Action<ServerSentEvent> onMessage;
 
     [Header("Debug")]
+    [SerializeField]
+    RequestAPI api = RequestAPI.MicrosoftWebRequest;
     [SerializeField]
     string pushUrl = "http://slothsoft.net/getData.php/sse/server.vct?mode=push&name=webrtc-YourNutz";
     [SerializeField]
@@ -42,74 +50,127 @@ public class ServerSentEventClient : MonoBehaviour {
 
     public IEnumerator PushRoutine(string type, string data) {
         string uri = pushUrl + $"&type={Uri.EscapeDataString(type)}";
-        //var request = WebRequest.CreateHttp(pushUrl + $"&type={Uri.EscapeDataString(type)}&data={Uri.EscapeDataString(data)}");
-        var request = WebRequest.CreateHttp(uri);
-        request.ContentType = "application/json";
-        request.Method = "POST";
-        using (var streamWriter = new StreamWriter(request.GetRequestStream())) {
-            streamWriter.Write(data);
+        switch (api) {
+            case RequestAPI.MicrosoftWebRequest: {
+                static void callback(IAsyncResult result) {
+                    var state = result.AsyncState as PushState;
+                    var response = state.request.GetResponse();
+                    state.isDone = true;
+                }
+                //var request = WebRequest.CreateHttp(pushUrl + $"&type={Uri.EscapeDataString(type)}&data={Uri.EscapeDataString(data)}");
+                var request = WebRequest.CreateHttp(uri);
+                request.ContentType = "application/json";
+                request.Method = "POST";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream())) {
+                    streamWriter.Write(data);
+                }
+                var state = new PushState { request = request, isDone = false };
+                request.BeginGetResponse(callback, state);
+                yield return new WaitUntil(() => state.isDone);
+                break;
+            }
+            case RequestAPI.UnityWebRequest: {
+                var uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(data));
+                var request = new UnityWebRequest(uri, "POST", null, uploadHandler);
+                yield return request.SendWebRequest();
+                break;
+            }
+            default:
+                throw new NotImplementedException();
         }
-        var state = new PushState { request = request, isDone = false };
-        request.BeginGetResponse(PushCallback, state);
-        yield return new WaitUntil(() => state.isDone);
-    }
-    static void PushCallback(IAsyncResult result) {
-        var state = result.AsyncState as PushState;
-        var response = state.request.GetResponse();
-        state.isDone = true;
     }
 
     IEnumerator PollRoutine() {
-        request = WebRequest.CreateHttp(pullUrl + lastEvent.id);
-        request.AllowWriteStreamBuffering = false;
-        request.AllowReadStreamBuffering = false;
-        var state = new PollState { request = request, queue = queue };
-        request.BeginGetResponse(PollCallback, state);
-        yield return new WaitUntil(() => state.isDone);
-        Debug.Log("Lost connection to server! Reconnecting...");
-        yield return new WaitForSeconds(1);
-        poll = null;
+        string uri = pullUrl + lastEvent.id;
+        switch (api) {
+            case RequestAPI.MicrosoftWebRequest: {
+                static void callback(IAsyncResult result) {
+                    var state = result.AsyncState as PollState;
+                    var stream = state.request.GetResponse().GetResponseStream();
+                    using (var reader = new StreamReader(stream)) {
+                        var lines = new List<string>();
+                        while (!reader.EndOfStream) {
+                            string line = reader.ReadLine();
+                            //Debug.Log(line);
+                            if (string.IsNullOrWhiteSpace(line)) {
+                                if (lines.Count > 0) {
+                                    //Debug.Log($"Parsing:\n{string.Join("\n", lines)})");
+                                    if (TryParseEvent(lines, out var eve)) {
+                                        state.queue.Enqueue(eve);
+                                    }
+                                    //Debug.Log("Done Parsing");
+                                    lines.Clear();
+                                }
+                            } else {
+                                lines.Add(line);
+                            }
+                        }
+                    }
+                    state.isDone = true;
+                }
+                request = WebRequest.CreateHttp(uri);
+                request.AllowWriteStreamBuffering = false;
+                request.AllowReadStreamBuffering = false;
+                var state = new PollState { request = request, queue = queue };
+                request.BeginGetResponse(callback, state);
+                yield return new WaitUntil(() => state.isDone);
+                Debug.Log("Lost connection to server! Reconnecting...");
+                yield return new WaitForSeconds(1);
+                poll = null;
+                break;
+            }
+            case RequestAPI.UnityWebRequest: {
+                var downloadHandler = new DownloadHandler(queue);
+                var request = new UnityWebRequest(uri, "GET", downloadHandler, null);
+                yield return request.SendWebRequest();
+                break;
+            }
+            default:
+                throw new NotImplementedException();
+        }
     }
 
-    static void PollCallback(IAsyncResult result) {
-        var state = result.AsyncState as PollState;
-        var stream = state.request.GetResponse().GetResponseStream();
-        using (var reader = new StreamReader(stream)) {
-            var lines = new List<string>();
-            while (!reader.EndOfStream) {
-                string line = reader.ReadLine();
-                //Debug.Log(line);
-                if (string.IsNullOrWhiteSpace(line)) {
-                    if (lines.Count > 0) {
-                        //Debug.Log($"Parsing:\n{string.Join("\n", lines)})");
-                        if (TryParseEvent(lines, out var eve)) {
-                            state.queue.Enqueue(eve);
-                        }
-                        //Debug.Log("Done Parsing");
-                        lines.Clear();
-                    }
-                } else {
-                    lines.Add(line);
+    class DownloadHandler : DownloadHandlerScript {
+        readonly Queue<ServerSentEvent> queue;
+        readonly StringBuilder builder = new StringBuilder();
+        public DownloadHandler(Queue<ServerSentEvent> queue) : base() {
+            this.queue = queue;
+        }
+        protected override bool ReceiveData(byte[] data, int dataLength) {
+            string text = Encoding.UTF8.GetString(data, 0, dataLength);
+            builder.Append(text);
+            text = builder.ToString();
+            bool didSomething = false;
+            for (int i = text.IndexOf("\n\n"); i != -1; i = text.IndexOf("\n\n")) {
+                didSomething = true;
+                string[] lines = text.Substring(0, i).Split('\n');
+                text = text.Substring(i + 2);
+                if (TryParseEvent(lines, out var eve)) {
+                    queue.Enqueue(eve);
                 }
             }
+            if (didSomething) {
+                builder.Clear();
+                builder.Append(text);
+            }
+            return Application.isPlaying;
         }
-        state.isDone = true;
     }
 
-    static bool TryParseEvent(List<string> lines, out ServerSentEvent eve) {
+    static bool TryParseEvent(IEnumerable<string> lines, out ServerSentEvent eve) {
         eve = new ServerSentEvent();
         bool hasData = false;
-        for (int i = 0; i < lines.Count; i++) {
-            if (lines[i].StartsWith("id:")) {
-                eve.id = int.Parse(lines[i].Substring("id:".Length).Trim());
+        foreach (string line in lines) {
+            if (line.StartsWith("id:")) {
+                eve.id = int.Parse(line.Substring("id:".Length).Trim());
                 hasData = true;
             }
-            if (lines[i].StartsWith("event:")) {
-                eve.type = lines[i].Substring("event:".Length).Trim();
+            if (line.StartsWith("event:")) {
+                eve.type = line.Substring("event:".Length).Trim();
                 hasData = true;
             }
-            if (lines[i].StartsWith("data:")) {
-                eve.data = lines[i].Substring("data:".Length).Trim();
+            if (line.StartsWith("data:")) {
+                eve.data = line.Substring("data:".Length).Trim();
                 hasData = true;
             }
         }
