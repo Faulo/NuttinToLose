@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d74ba81da3d9dd42af9e5d37f2d2b6b, type: 3}
-  m_Name: LoadScene_GameAutumn
+  m_Name: LoadScene_Level
   m_EditorClassIdentifier: 
-  sceneToLoad: Scene_Game_Autumn
+  sceneToLoad: Scene_Level
