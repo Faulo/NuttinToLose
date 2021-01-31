@@ -7,27 +7,39 @@ public class Environment : MonoBehaviour {
     [SerializeField]
     GameObject winterInstance = default;
     [SerializeField]
-    SeasonManager manager = default;
+    ServerConnection server = default;
 
     void Awake() {
         OnValidate();
     }
-    void Start() {
-        manager = FindObjectOfType<SeasonManager>();
-        if (manager) {
-            switch (manager.currentSeason) {
-                case Season.Fall:
-                    fallInstance.SetActive(true);
-                    winterInstance.SetActive(false);
-                    break;
-                case Season.Winter:
-                    fallInstance.SetActive(false);
-                    winterInstance.SetActive(true);
-                    break;
-            }
+    void OnEnable() {
+        server.onStateEnter += HandleState;
+    }
+    void OnDisable() {
+        server.onStateEnter -= HandleState;
+    }
+    void HandleState(WorldState state) {
+        switch (state) {
+            case WorldState.Fall:
+            case WorldState.HighScore:
+                fallInstance.SetActive(true);
+                winterInstance.SetActive(false);
+                break;
+            case WorldState.Lobby:
+            case WorldState.Winter:
+                fallInstance.SetActive(false);
+                winterInstance.SetActive(true);
+                break;
         }
     }
+    void Start() {
+        fallInstance.SetActive(false);
+        winterInstance.SetActive(true);
+    }
     void OnValidate() {
+        if (!server) {
+            server = FindObjectOfType<ServerConnection>();
+        }
         fallInstance = transform.childCount > 0
             ? transform.GetChild(0).gameObject
             : null;

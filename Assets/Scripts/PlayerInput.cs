@@ -1,3 +1,4 @@
+using System;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,6 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour {
     [SerializeField]
     PlayerController player = default;
+    [SerializeField]
+    ServerConnection server = default;
     [SerializeField]
     GroundCheck groundCheck = default;
     [SerializeField]
@@ -85,6 +88,7 @@ public class PlayerInput : MonoBehaviour {
         realDigAction.Enable();
         fakeDigAction.Enable();
         digUpAction.Enable();
+        server.onStateEnter += HandleStateChange;
     }
     void OnDisable() {
         moveAction.Disable();
@@ -93,6 +97,24 @@ public class PlayerInput : MonoBehaviour {
         realDigAction.Disable();
         fakeDigAction.Disable();
         digUpAction.Disable();
+        server.onStateEnter -= HandleStateChange;
+    }
+    void HandleStateChange(WorldState state) {
+        switch (state) {
+            case WorldState.Inactive:
+                break;
+            case WorldState.Lobby:
+                break;
+            case WorldState.Fall:
+                break;
+            case WorldState.Winter:
+                break;
+            case WorldState.HighScore:
+                enabled = false;
+                break;
+            default:
+                throw new NotImplementedException(state.ToString());
+        }
     }
     void Awake() {
         OnValidate();
@@ -100,6 +122,9 @@ public class PlayerInput : MonoBehaviour {
     void OnValidate() {
         if (!player) {
             player = GetComponentInParent<PlayerController>();
+        }
+        if (!server) {
+            server = FindObjectOfType<ServerConnection>();
         }
         if (!referenceCamera) {
             referenceCamera = Camera.main;
