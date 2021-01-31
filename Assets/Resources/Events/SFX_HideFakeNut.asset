@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2aff677e32e23d4ea40899147790b72, type: 3}
   m_Name: SFX_HideFakeNut
   m_EditorClassIdentifier: 
-  audioPrefab: {fileID: 8003373738391254619, guid: 3c94573f021ada04fa0885fbfef3e68c, type: 3}
+  audioPrefab: {fileID: 8003373738391254619, guid: 16e10b9f4b822fe4792383914c18be91, type: 3}
   offset: 0
   minimumPitch: 1.2
   maximumPitch: 1.4
