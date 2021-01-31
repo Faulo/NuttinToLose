@@ -52,7 +52,7 @@ MonoBehaviour:
   updateInterval: 0.01
   spotPrefab: {fileID: 8719546882227100746, guid: 950a1120737335d40845301ff67d88aa, type: 3}
   spawnSpot: {fileID: 0}
-  spawnRadius: 1
+  spawnRadius: 10
   startingNutCount: 10
   startAction:
     m_Name: Start

@@ -94,6 +94,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
+      propertyPath: server
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: fallInstance
       value: 
       objectReference: {fileID: 5958720428625271724}
