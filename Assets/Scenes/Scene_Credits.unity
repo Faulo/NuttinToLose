@@ -505,8 +505,21 @@ PrefabInstance:
       value: P_Camera_Canvas_Credits
       objectReference: {fileID: 0}
     - target: {fileID: 8931373429752481357, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
+      propertyPath: m_text
+      value: '2D Art - UX - VFX/Effects
+
+        3D Art (Environment)
+
+        Sound
+
+        Programming
+
+        3D
+        Art (Character) - Level Design'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8931373429752481357, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
       propertyPath: m_fontSize
-      value: 24.65
+      value: 30.15
       objectReference: {fileID: 0}
     - target: {fileID: 8931373429752481357, guid: e433eb477d9b8b549bec5d0fe7708ecf, type: 3}
       propertyPath: m_margin.w
