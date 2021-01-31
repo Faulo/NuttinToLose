@@ -287,7 +287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_fontSizeMax
-      value: 60
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4113736132656962942, guid: dd5e05ddd3499df4f8b36c1c12a9be94, type: 3}
       propertyPath: m_enableAutoSizing
