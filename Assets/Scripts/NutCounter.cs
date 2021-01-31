@@ -4,13 +4,22 @@ using UnityEngine.Assertions;
 
 public class NutCounter : MonoBehaviour {
     [SerializeField]
+    PlayerController player = default;
+    [SerializeField]
     GameObject prefabToInstantiate = default;
     [SerializeField]
-    List<GameObject> nuts = default;
+    List<GameObject> nuts = new List<GameObject>();
 
     void Start() {
-        if (nuts == null) {
-            nuts = new List<GameObject>();
+        player.onNutChange += HandleNutChange;
+    }
+
+    public void HandleNutChange(int count) {
+        if (count > nuts.Count) {
+            AddNuts(count - nuts.Count);
+        }
+        if (nuts.Count > count) {
+            ReduceNuts(nuts.Count - count);
         }
     }
 

@@ -9,6 +9,7 @@ public class PlayerData {
     public Vector3 position;
     public float angle;
     public int state;
+    public int nuts;
     public PlayerState playerState {
         get => (PlayerState)state;
         set => state = (int)value;

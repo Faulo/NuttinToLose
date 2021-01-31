@@ -21,8 +21,14 @@ public class ServerConnection : MonoBehaviour {
 
     Dictionary<string, DigSpot> digs = new Dictionary<string, DigSpot>();
 
+    [SerializeField, Range(0, 10)]
+    float spawnRadius = 1;
+
+    Vector3 spawnPosition;
 
     void Start() {
+        spawnPosition = localPlayer.position;
+
         localId = System.Guid.NewGuid().ToString();
         localPlayer.data.id = localId;
         spawnedPlayers[localId] = localPlayer;
@@ -33,6 +39,13 @@ public class ServerConnection : MonoBehaviour {
         localPlayer.onDigUp += HandleDigUp;
 
         StartCoroutine(UpdatePlayerRoutine());
+
+        Invoke(nameof(StartRound), 1);
+    }
+
+    public void StartRound() {
+        localPlayer.position = spawnPosition;
+        localPlayer.nutCount = 10;
     }
 
     void HandleDigUp(DigSpot spot) {

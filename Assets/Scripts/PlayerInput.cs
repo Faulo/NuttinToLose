@@ -177,7 +177,7 @@ public class PlayerInput : MonoBehaviour {
                 return;
             }
             // ... or dig!
-            if (intendsRealDig && !groundCheck.spot) {
+            if (intendsRealDig && !groundCheck.spot && player.nutCount > 0) {
                 if (player.data.playerState == PlayerState.Idle) {
                     player.data.playerState = PlayerState.RealDigging;
                     digTimer = digDuration;

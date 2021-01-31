@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01d9428121fb864d973c1735247a4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    id: 
+    position: {x: 0, y: 0, z: 0}
+    isReal: 0
 --- !u!135 &1808405326476798777
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -57,7 +61,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8035071092030924381
 Rigidbody:
