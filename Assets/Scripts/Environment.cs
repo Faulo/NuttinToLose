@@ -41,7 +41,7 @@ public class Environment : MonoBehaviour {
             return;
         }
         obj.SetActive(true);
-        obj.transform.position = Vector3.zero;
+        obj.transform.localPosition = Vector3.zero;
         obj.isStatic = true;
         if (obj.TryGetComponent<MeshFilter>(out var filter)) {
             if (!obj.TryGetComponent<MeshCollider>(out var collider)) {
