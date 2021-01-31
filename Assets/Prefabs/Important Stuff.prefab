@@ -1312,6 +1312,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4418114178039569458}
     m_Modifications:
+    - target: {fileID: 2470699944899462758, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
+      propertyPath: referenceCamera
+      value: 
+      objectReference: {fileID: 4418114176947001686}
     - target: {fileID: 3437413173279398840, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1368,14 +1372,6 @@ PrefabInstance:
       propertyPath: referenceCamera
       value: 
       objectReference: {fileID: 4418114176947001686}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: fakeDigAction.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Gamepad>/buttonEast
-      objectReference: {fileID: 0}
-    - target: {fileID: 8784114892479946737, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
-      propertyPath: realDigAction.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Gamepad>/buttonWest
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1716e56fefecfb046aee66e57946cc8d, type: 3}
 --- !u!114 &2432567091756347663 stripped

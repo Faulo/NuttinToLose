@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3437413173279398840}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &415970790
 MonoBehaviour:
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 91c8a302-820c-4629-ab99-a4a256d6666a
-      m_Path: <Gamepad>/buttonEast
+      m_Path: <Gamepad>/buttonWest
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: e3577f8f-a902-423c-ab1c-050e0df26786
-      m_Path: <Gamepad>/buttonWest
+      m_Path: <Gamepad>/buttonEast
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -363,6 +363,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 125280657814418378, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 756486825124088473, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -389,15 +393,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 148.25
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.47
+      value: 66.5
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 84.09
       objectReference: {fileID: 0}
     - target: {fileID: 7426979359934059940, guid: 52b1f7248261a5a49a54d7d9d899ee98, type: 3}
       propertyPath: m_LocalRotation.w

@@ -31,6 +31,7 @@ public class ServerConnection : MonoBehaviour {
 
         localId = System.Guid.NewGuid().ToString();
         localPlayer.data.id = localId;
+        localPlayer.data.name = client.playerName;
         spawnedPlayers[localId] = localPlayer;
         client.onMessage += HandleMessage;
 

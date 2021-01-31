@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class ServerSentEventClient : MonoBehaviour {
-    enum RequestAPI {
+    public enum RequestAPI {
         MicrosoftWebRequest,
         UnityWebRequest
     }
@@ -24,13 +24,11 @@ public class ServerSentEventClient : MonoBehaviour {
 
     public event Action<ServerSentEvent> onMessage;
 
+    public string playerName => settings.playerName;
+
     [Header("Debug")]
     [SerializeField]
-    RequestAPI api = RequestAPI.MicrosoftWebRequest;
-    [SerializeField]
-    string pushUrl = "http://slothsoft.net/getData.php/sse/server.vct?mode=push&name=webrtc-YourNutz";
-    [SerializeField]
-    string pullUrl = "http://slothsoft.net/getData.php/sse/server.vct?mode=pull&name=webrtc-YourNutz&lastId=";
+    ServerSentEventSettings settings = default;
     [SerializeField]
     ServerSentEvent lastEvent = new ServerSentEvent();
 
@@ -49,8 +47,8 @@ public class ServerSentEventClient : MonoBehaviour {
     }
 
     public IEnumerator PushRoutine(string type, string data) {
-        string uri = pushUrl + $"&type={Uri.EscapeDataString(type)}";
-        switch (api) {
+        string uri = settings.pushUrl + $"&room={Uri.EscapeDataString(settings.roomName)}&type={Uri.EscapeDataString(type)}";
+        switch (settings.api) {
             case RequestAPI.MicrosoftWebRequest: {
                 static void callback(IAsyncResult result) {
                     var state = result.AsyncState as PushState;
@@ -81,8 +79,8 @@ public class ServerSentEventClient : MonoBehaviour {
     }
 
     IEnumerator PollRoutine() {
-        string uri = pullUrl + lastEvent.id;
-        switch (api) {
+        string uri = settings.pullUrl + $"&room={Uri.EscapeDataString(settings.roomName)}&lastId={lastEvent.id}";
+        switch (settings.api) {
             case RequestAPI.MicrosoftWebRequest: {
                 static void callback(IAsyncResult result) {
                     var state = result.AsyncState as PollState;

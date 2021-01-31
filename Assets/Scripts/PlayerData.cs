@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerData {
     public string id;
 
+    public string name;
     public float speed;
     public Vector3 position;
     public float angle;

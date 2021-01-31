@@ -102,7 +102,7 @@ public class PlayerInput : MonoBehaviour {
             player = GetComponentInParent<PlayerController>();
         }
         if (!referenceCamera) {
-            referenceCamera = FindObjectOfType<Camera>();
+            referenceCamera = Camera.main;
         }
     }
 
