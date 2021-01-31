@@ -9,17 +9,12 @@ public class HighscoreRow : MonoBehaviour {
     TextMeshProUGUI nickname = default;
     [SerializeField]
     TextMeshProUGUI nuts = default;
-    void Start() {
-        placement.text = "x";
-        nickname.text = "Nickname";
-        nuts.text = "0";
-    }
 
-    public void SetValues(int placement, string name, int nuts) {
+    public void SetValues(int placement, string nickname, int nuts) {
         Assert.IsTrue(nuts >= 0);
         Assert.IsTrue(placement > 0);
         this.placement.text = placement.ToString();
-        nickname.text = name;
+        this.nickname.text = nickname;
         this.nuts.text = nuts.ToString();
     }
 

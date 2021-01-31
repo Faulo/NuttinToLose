@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -46,6 +47,10 @@ public class ServerConnection : MonoBehaviour {
     [SerializeField]
     ServerTimer timerInstance = default;
 
+    [Header("Highscore")]
+    [SerializeField]
+    GameObject highscoreInstance = default;
+
     public WorldState state {
         get => stateCache;
         private set {
@@ -58,6 +63,10 @@ public class ServerConnection : MonoBehaviour {
         }
     }
     WorldState stateCache;
+
+    public IEnumerable<PlayerData> highscores => spawnedPlayers.Values
+        .Select(player => player.data)
+        .OrderByDescending(data => data.nuts);
 
     void OnDrawGizmos() {
         Gizmos.color = Color.cyan;
@@ -115,17 +124,20 @@ public class ServerConnection : MonoBehaviour {
                 break;
             case WorldState.HighScore:
                 ResetPlayer();
+                highscoreInstance.SetActive(true);
                 break;
             default:
                 throw new NotImplementedException(state.ToString());
         }
     }
     IEnumerator StartTimer(float duration, WorldState state) {
+        timerInstance.gameObject.SetActive(true);
         timerInstance.time = duration;
         while (timerInstance.time > 0) {
             yield return null;
             timerInstance.time -= Time.deltaTime;
         }
+        timerInstance.gameObject.SetActive(false);
         yield return new WaitForFixedUpdate();
         this.state = state;
     }
