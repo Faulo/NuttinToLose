@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19677d5781b22274f97a60ab99cdb133, type: 3}
   m_Name: Player_Dig
   m_EditorClassIdentifier: 
-  accelerationDuration: 0.125
+  accelerationDuration: 0.0625
   rotationDuration: 0.125
   maximumSpeed: 0
   forwardBoost: 0
   upwardsBoost: 0
   drag: 1
   gravity: 1
+  digDuration: 1

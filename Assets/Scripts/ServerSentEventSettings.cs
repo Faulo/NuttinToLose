@@ -13,6 +13,8 @@ public class ServerSentEventSettings : ScriptableObject {
     public string roomName = "YourNutz";
     [SerializeField]
     public string playerName = "Ahörnchen";
+    [SerializeField]
+    public bool isOffline = false;
 
     void OnValidate() {
         roomName = Regex.Replace(roomName, "[^a-zA-Zöäüß]+", "");
@@ -33,5 +35,9 @@ public class ServerSentEventSettings : ScriptableObject {
     public void SetPlayerName(string name) {
         playerName = name;
         OnValidate();
+    }
+
+    public void SetOffline(bool isOffline) {
+        this.isOffline = isOffline;
     }
 }
