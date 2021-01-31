@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ServerSentEventSettings : ScriptableObject
-{
+public class ServerSentEventSettings : ScriptableObject {
     [SerializeField]
     public ServerSentEventClient.RequestAPI api = ServerSentEventClient.RequestAPI.MicrosoftWebRequest;
     [SerializeField]

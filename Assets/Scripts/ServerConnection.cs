@@ -128,6 +128,7 @@ public class ServerConnection : MonoBehaviour {
             player = Instantiate(playerPrefab, data.position, data.rotation);
             spawnedPlayers[data.id] = player;
         }
+        player.nutCount = data.nuts;
         player.data = data;
     }
     public bool IsLocalPlayer(string id) => localId == id;

@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 
 public class ServerSentEventClient : MonoBehaviour {
     public enum RequestAPI {
+        OfflineMode,
         MicrosoftWebRequest,
         UnityWebRequest
     }
@@ -49,6 +50,8 @@ public class ServerSentEventClient : MonoBehaviour {
     public IEnumerator PushRoutine(string type, string data) {
         string uri = settings.pushUrl + $"&room={Uri.EscapeDataString(settings.roomName)}&type={Uri.EscapeDataString(type)}";
         switch (settings.api) {
+            case RequestAPI.OfflineMode:
+                break;
             case RequestAPI.MicrosoftWebRequest: {
                 static void callback(IAsyncResult result) {
                     var state = result.AsyncState as PushState;
@@ -81,6 +84,8 @@ public class ServerSentEventClient : MonoBehaviour {
     IEnumerator PollRoutine() {
         string uri = settings.pullUrl + $"&room={Uri.EscapeDataString(settings.roomName)}&lastId={lastEvent.id}";
         switch (settings.api) {
+            case RequestAPI.OfflineMode:
+                break;
             case RequestAPI.MicrosoftWebRequest: {
                 static void callback(IAsyncResult result) {
                     var state = result.AsyncState as PollState;
