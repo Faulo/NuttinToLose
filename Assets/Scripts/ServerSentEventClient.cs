@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using Slothsoft.UnityExtensions;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -27,7 +28,7 @@ public class ServerSentEventClient : MonoBehaviour {
     public string playerName => settings.playerName;
 
     [Header("Debug")]
-    [SerializeField]
+    [SerializeField, Expandable]
     ServerSentEventSettings settings = default;
     [SerializeField]
     ServerSentEvent lastEvent = new ServerSentEvent();
