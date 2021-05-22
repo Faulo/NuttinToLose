@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c115e43579bfa488a311d5a5fe46bb, type: 3}
-  m_Name: Slothsoft.UnityExtensionsSettings
+  m_Name: UnityExtensionsSettings
   m_EditorClassIdentifier: 
   expandableSettings:
     showSourceFile: 1
@@ -26,5 +26,9 @@ MonoBehaviour:
   prefabUtilsSettings:
     assetsFolder: Assets/
     prefabExtension: .prefab
-  projectFileSettings: []
+  projectFileSettings:
+  - affectedAssemblies:
+    - {fileID: 5897886265953266890, guid: d4db81b87a1df9547a0db59185d88f0a, type: 3}
+    setCSharpVersionTo: 8.0
+    m_setWarningLevelTo: 4
   addNamespaceToCSharpFiles: 0
