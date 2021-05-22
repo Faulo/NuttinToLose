@@ -62,8 +62,8 @@ public class Environment : MonoBehaviour {
     class EnvironmentEditor : RuntimeEditorTools<Environment> {
         protected override void DrawEditorTools() {
             DrawButton("Remove MeshCollider", () => {
-                component.SetupCollider(component.fallInstance);
-                component.SetupCollider(component.winterInstance);
+                target.SetupCollider(target.fallInstance);
+                target.SetupCollider(target.winterInstance);
             });
         }
     }
