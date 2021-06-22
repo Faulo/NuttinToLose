@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Slothsoft.UnityExtensions;
+using Unity.WebRTC;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -81,6 +82,8 @@ public class ServerConnection : MonoBehaviour {
     }
 
     void Start() {
+        StartRTC();
+
         localId = Guid.NewGuid().ToString();
         localPlayer.data.id = localId;
         localPlayer.data.name = client.playerName;
@@ -227,6 +230,12 @@ public class ServerConnection : MonoBehaviour {
             case "world-state":
                 state = (WorldState)int.Parse(eve.data);
                 break;
+            case "rtc-ice":
+                var message = JsonUtility.FromJson<ServerICEMessage>(eve.data);
+                if (message.to == localId) {
+                    ReceiveICEMessage(message);
+                }
+                break;
         }
     }
 
@@ -245,6 +254,7 @@ public class ServerConnection : MonoBehaviour {
         } else {
             player = Instantiate(playerPrefab, data.position, data.rotation);
             spawnedPlayers[data.id] = player;
+            StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
         }
         player.nutCount = data.nuts;
         player.data = data;
@@ -267,4 +277,97 @@ public class ServerConnection : MonoBehaviour {
             spot.GetDugUp();
         }
     }
+
+
+
+    #region WebRTC
+    Dictionary<string, RTCPeerConnection> localConnections = new Dictionary<string, RTCPeerConnection>();
+    Dictionary<string, RTCDataChannel> localDataChannels = new Dictionary<string, RTCDataChannel>();
+    Dictionary<string, RTCPeerConnection> remoteConnections = new Dictionary<string, RTCPeerConnection>();
+    Dictionary<string, RTCDataChannel> remoteDataChannels = new Dictionary<string, RTCDataChannel>();
+    void StartRTC() {
+        WebRTC.Initialize();
+    }
+    IEnumerator CreateRemotePlayerConnectionRoutine(string id) {
+        if (remoteConnections.ContainsKey(id)) {
+            yield break;
+        }
+        remoteConnections[id] = CreateConnection();
+        remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
+        remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
+        remoteDataChannels[id].OnOpen += () => Debug.Log("REMOTE DATA CHANNEL OPENED");
+        var op = remoteConnections[id].CreateOffer();
+        yield return op;
+        if (op.IsError) {
+            Debug.LogError(op.Error);
+            yield break;
+        }
+        yield return CreateOfferSuccess(id, op.Desc);
+    }
+    IEnumerator CreateOfferSuccess(string id, RTCSessionDescription desc) {
+        var op = remoteConnections[id].SetLocalDescription(ref desc);
+        yield return op;
+        if (op.IsError) {
+            Debug.LogError(op.Error);
+            yield break;
+        }
+    }
+    void AddRemoteCandidate(string remoteId, RTCIceCandidate candidate) {
+        // TODO: send this to whom it may concern
+        var message = new ServerICEMessage {
+            from = localId,
+            to = remoteId,
+            candidate = candidate.Candidate,
+            sdpMid = candidate.SdpMid,
+            sdpMLineIndex = candidate.SdpMLineIndex ?? 0,
+        };
+        Debug.Log($"Sending in the name of {remoteId}:\n{JsonUtility.ToJson(message)}");
+        StartCoroutine(client.PushRoutine("rtc-ice", message));
+    }
+    void ReceiveICEMessage(ServerICEMessage message) {
+        string id = message.from;
+        CreateLocalPlayerConnection(id);
+        var ice = new RTCIceCandidateInit {
+            candidate = message.candidate,
+            sdpMid = message.sdpMid,
+            sdpMLineIndex = message.sdpMLineIndex,
+        };
+        localConnections[id].AddIceCandidate(new RTCIceCandidate(ice));
+        Debug.Log($"Added ice {ice} to {localConnections[id]}!");
+    }
+    void CreateLocalPlayerConnection(string id) {
+        if (localConnections.ContainsKey(id)) {
+            return;
+        }
+        localConnections[id] = CreateConnection();
+        localDataChannels[id] = localConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
+        localDataChannels[id].OnOpen += () => Debug.Log("LOCAL DATA CHANNEL OPENED");
+    }
+    IEnumerator CreateLocalPlayerAnswerRoutine(string id) {
+        var op = localConnections[id].CreateAnswer();
+        yield return op;
+        if (op.IsError) {
+            Debug.LogError(op.Error);
+            yield break;
+        }
+        yield return CreateOfferSuccess(id, op.Desc);
+    }
+    public RTCConfiguration CreateConfiguration() {
+        var config = new RTCConfiguration {
+            iceServers = new[] {
+                new RTCIceServer { urls = new string[] { "stun:stun.l.google.com:19302" } }
+            }
+        };
+        return config;
+    }
+    public RTCPeerConnection CreateConnection() {
+        var configuration = CreateConfiguration();
+        var connection = new RTCPeerConnection(ref configuration);
+        connection.OnIceConnectionChange += OnIceConnectionChange;
+        return connection;
+    }
+    void OnIceConnectionChange(RTCIceConnectionState state) {
+        Debug.Log($"OnIceConnectionChange: {state}");
+    }
+    #endregion
 }

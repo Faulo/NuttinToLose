@@ -46,7 +46,7 @@ public class ServerSentEventClient : MonoBehaviour {
             poll = StartCoroutine(PollRoutine());
         }
     }
-
+    public IEnumerator PushRoutine(string type, ServerMessage data) => PushRoutine(type, JsonUtility.ToJson(data));
     public IEnumerator PushRoutine(string type, string data) {
         if (settings.isOffline) {
             yield break;
