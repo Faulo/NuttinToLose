@@ -291,7 +291,6 @@ public class ServerConnection : MonoBehaviour {
         if (spawnedPlayers.TryGetValue(data.id, out var player)) {
         } else {
             player = Instantiate(playerPrefab, data.position, data.rotation);
-            Debug.Log($"Created player {player}");
             spawnedPlayers[data.id] = player;
             StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
         }
@@ -336,7 +335,6 @@ public class ServerConnection : MonoBehaviour {
         WebRTC.Initialize();
     }
     IEnumerator CreateRemotePlayerConnectionRoutine(string id) {
-        Debug.Log($"Remote {id}: {remoteConnections.ContainsKey(id)}");
         if (remoteConnections.ContainsKey(id)) {
             yield break;
         }
@@ -437,9 +435,15 @@ public class ServerConnection : MonoBehaviour {
         }
         localConnections[id] = CreateConnection();
         localConnections[id].OnDataChannel += channel => {
-            Debug.Log($"Id: {channel.Id} Label: {channel.Label}");
-            localDataChannels[id] = channel;
-            channel.OnMessage += UpdatePlayerRTC;
+            switch (channel.Label) {
+                case "data":
+                    localDataChannels[id] = channel;
+                    channel.OnMessage += UpdatePlayerRTC;
+                    Debug.Log($"Established data channel with {id}: {channel}");
+                    break;
+                default:
+                    throw new NotImplementedException($"Dunno what to do with channel '{channel.Label}'");
+            }
         };
     }
     IEnumerator CreateLocalPlayerAnswerRoutine(string id) {
