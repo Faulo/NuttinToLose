@@ -1,7 +1,9 @@
 using System;
 
-[Serializable]
-public class ServerMessage {
-    public string from;
-    public string to;
+namespace NuttinToLose {
+    [Serializable]
+    public class ServerMessage {
+        public string from;
+        public string to;
+    }
 }

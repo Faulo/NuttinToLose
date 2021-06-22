@@ -1,4 +1,6 @@
-public class RemotePlayerController : PlayerController {
+namespace NuttinToLose {
+    public class RemotePlayerController : PlayerController {
 
 
+    }
 }

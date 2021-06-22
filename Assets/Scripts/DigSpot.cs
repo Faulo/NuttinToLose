@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class DigSpot : MonoBehaviour {
-    public DigData data;
+namespace NuttinToLose {
+    public class DigSpot : MonoBehaviour {
+        public DigData data;
 
-    public void GetDugUp() {
-        Destroy(gameObject);
+        public void GetDugUp() {
+            Destroy(gameObject);
+        }
     }
 }
