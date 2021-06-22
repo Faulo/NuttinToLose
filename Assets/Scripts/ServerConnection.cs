@@ -342,8 +342,10 @@ namespace NuttinToLose {
         Dictionary<string, RTCDataChannel> localDataChannels = new Dictionary<string, RTCDataChannel>();
         Dictionary<string, RTCPeerConnection> remoteConnections = new Dictionary<string, RTCPeerConnection>();
         Dictionary<string, RTCDataChannel> remoteDataChannels = new Dictionary<string, RTCDataChannel>();
+        MediaStream audioStream;
         void StartRTC() {
             WebRTC.Initialize();
+            audioStream = Audio.CaptureStream();
         }
         IEnumerator CreateRemotePlayerConnectionRoutine(string id) {
             if (remoteConnections.ContainsKey(id)) {
@@ -352,6 +354,9 @@ namespace NuttinToLose {
             remoteConnections[id] = CreateConnection();
             remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
             remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
+            foreach (var track in audioStream.GetTracks()) {
+                remoteConnections[id].AddTrack(track, audioStream);
+            }
             var op = remoteConnections[id].CreateOffer();
             yield return op;
             if (op.IsError) {
@@ -457,6 +462,9 @@ namespace NuttinToLose {
             }
             localConnections[id] = CreateConnection();
             localConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
+            localConnections[id].OnTrack += eve => {
+                Debug.Log($"Received track {eve.Track.Id} of kind {eve.Track.Kind}");
+            };
             localConnections[id].OnDataChannel += channel => {
                 switch (channel.Label) {
                     case "data":
