@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Slothsoft.UnityExtensions;
+#if !PLATFORM_WEBGL
 using Unity.WebRTC;
+#endif
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,8 +25,6 @@ namespace NuttinToLose {
         PlayerController playerPrefab = default;
         [SerializeField, Range(0, 5)]
         float updateInterval = 1;
-        [SerializeField, Range(0, 5)]
-        float updateChannelInterval = 1;
         [SerializeField, Expandable]
         DigSpot spotPrefab = default;
 
@@ -81,10 +81,14 @@ namespace NuttinToLose {
             }
         }
         void OnEnable() {
+#if !PLATFORM_WEBGL
             StartRTC();
+#endif
         }
         void OnDisable() {
+#if !PLATFORM_WEBGL
             StopRTC();
+#endif
         }
 
         void Start() {
@@ -106,17 +110,9 @@ namespace NuttinToLose {
             };
 
             StartCoroutine(UpdatePlayerRoutine());
-            StartCoroutine(UpdateChannelRoutine());
 
             state = WorldState.Lobby;
         }
-
-        void Update() {
-            foreach (var (id, track) in localTracks) {
-                Debug.Log(track.ReadyState);
-            }
-        }
-
 
         void HandleEnterState(WorldState state) {
             switch (state) {
@@ -222,18 +218,6 @@ namespace NuttinToLose {
                 yield return wait;
             }
         }
-        IEnumerator UpdateChannelRoutine() {
-            var wait = new WaitForSeconds(updateChannelInterval);
-            while (true) {
-                string json = StringifyPlayer(localPlayer);
-                foreach (var channel in remoteDataChannels.Values) {
-                    if (channel.ReadyState == RTCDataChannelState.Open) {
-                        channel.Send(json);
-                    }
-                }
-                yield return wait;
-            }
-        }
 
         void HandleMessage(ServerSentEvent eve) {
             //Debug.Log(eve.type);
@@ -254,6 +238,7 @@ namespace NuttinToLose {
                 case "world-state":
                     state = (WorldState)int.Parse(eve.data);
                     break;
+#if !PLATFORM_WEBGL
                 case "rtc-ice": {
                     var message = JsonUtility.FromJson<ServerICEMessage>(eve.data);
                     if (message.to == localId) {
@@ -275,6 +260,7 @@ namespace NuttinToLose {
                     }
                     break;
                 }
+#endif
             }
         }
 
@@ -290,7 +276,9 @@ namespace NuttinToLose {
         void SpawnPlayer(PlayerData data) {
             var player = Instantiate(playerPrefab, data.position, data.rotation);
             spawnedPlayers[data.id] = player;
+#if !PLATFORM_WEBGL
             StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
+#endif
         }
         void UpdatePlayer(byte[] bytes) {
             string json = Encoding.UTF8.GetString(bytes);
@@ -321,9 +309,12 @@ namespace NuttinToLose {
 
 
         #region WebRTC
+#if !PLATFORM_WEBGL
         [Header("WebRTC")]
         [SerializeField]
         bool captureAudio = false;
+        [SerializeField, Range(0, 1)]
+        float updateRTCInterval = 0;
         Dictionary<string, RTCPeerConnection> localConnections = new Dictionary<string, RTCPeerConnection>();
         Dictionary<string, RTCDataChannel> localDataChannels = new Dictionary<string, RTCDataChannel>();
         Dictionary<string, MediaStreamTrack> localTracks = new Dictionary<string, MediaStreamTrack>();
@@ -334,6 +325,20 @@ namespace NuttinToLose {
             WebRTC.Initialize();
             if (captureAudio) {
                 audioStream = Audio.CaptureStream();
+            }
+            StartCoroutine(UpdateChannelRoutine());
+        }
+        IEnumerator PushMessageRoutine(string type, ServerMessage data) => client.PushRoutine(type, JsonUtility.ToJson(data));
+        IEnumerator UpdateChannelRoutine() {
+            var wait = new WaitForSeconds(updateRTCInterval);
+            while (true) {
+                string json = StringifyPlayer(localPlayer);
+                foreach (var channel in remoteDataChannels.Values) {
+                    if (channel.ReadyState == RTCDataChannelState.Open) {
+                        channel.Send(json);
+                    }
+                }
+                yield return wait;
             }
         }
         void StopRTC() {
@@ -398,7 +403,7 @@ namespace NuttinToLose {
                 sdp = desc.sdp,
             };
             //Debug.Log($"Sending offer:\n{JsonUtility.ToJson(message)}");
-            yield return client.PushRoutine("rtc-offer", message);
+            yield return PushMessageRoutine("rtc-offer", message);
         }
         void ReceiveOfferMessage(ServerSessionMessage message) {
             string id = message.from;
@@ -431,7 +436,7 @@ namespace NuttinToLose {
                 sdp = desc.sdp,
             };
             //Debug.Log($"Sending answer:\n{JsonUtility.ToJson(message)}");
-            yield return client.PushRoutine("rtc-answer", message);
+            yield return PushMessageRoutine("rtc-answer", message);
         }
         void ReceiveAnswerMessage(ServerSessionMessage message) {
             string remoteId = message.from;
@@ -457,7 +462,7 @@ namespace NuttinToLose {
             if (remoteConnections.TryGetValue(remoteId, out connection)) {
                 connection.AddIceCandidate(candidate);
             }
-            StartCoroutine(client.PushRoutine("rtc-ice", message));
+            StartCoroutine(PushMessageRoutine("rtc-ice", message));
         }
         void ReceiveICEMessage(ServerICEMessage message) {
             string id = message.from;
@@ -523,6 +528,7 @@ namespace NuttinToLose {
         void OnIceConnectionChange(RTCIceConnectionState state) {
             Debug.Log($"OnIceConnectionChange: {state}");
         }
+#endif
         #endregion
     }
 }

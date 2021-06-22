@@ -1,3 +1,4 @@
+#if !PLATFORM_WEBGL
 using System;
 
 namespace NuttinToLose {
@@ -7,3 +8,4 @@ namespace NuttinToLose {
         public string to;
     }
 }
+#endif
