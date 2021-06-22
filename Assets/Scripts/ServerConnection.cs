@@ -310,14 +310,17 @@ public class ServerConnection : MonoBehaviour {
         }
         remoteConnections[id] = CreateConnection();
         remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
-        remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-        remoteDataChannels[id].OnOpen += () => {
-            Debug.Log("REMOTE DATA CHANNEL OPENED");
-            remoteDataChannels[id].Send("Ping");
-        };
-        remoteDataChannels[id].OnMessage += message => {
-            string text = Encoding.UTF8.GetString(message);
-            Debug.Log($"Message from {id}: {text}");
+        remoteConnections[id].OnDataChannel += channel => {
+            Debug.Log("DATA CHANNEL RECEIVED");
+            remoteDataChannels[id] = channel;
+            channel.OnOpen += () => {
+                Debug.Log("REMOTE DATA CHANNEL OPENED");
+                channel.Send("Ping");
+            };
+            channel.OnMessage += message => {
+                string text = Encoding.UTF8.GetString(message);
+                Debug.Log($"Message from {id}: {text}");
+            };
         };
         var op = remoteConnections[id].CreateOffer();
         yield return op;
