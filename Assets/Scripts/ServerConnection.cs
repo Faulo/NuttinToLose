@@ -81,29 +81,13 @@ namespace NuttinToLose {
             }
         }
         void OnEnable() {
+            StartRTC();
         }
         void OnDisable() {
-            foreach (var channel in remoteDataChannels.Values) {
-                channel.Close();
-            }
-            foreach (var channel in localDataChannels.Values) {
-                channel.Close();
-            }
-            foreach (var connection in remoteConnections.Values) {
-                connection.Close();
-            }
-            foreach (var connection in localConnections.Values) {
-                connection.Close();
-            }
-            remoteDataChannels.Clear();
-            localDataChannels.Clear();
-            remoteConnections.Clear();
-            localConnections.Clear();
+            StopRTC();
         }
 
         void Start() {
-            StartRTC();
-
             localId = Guid.NewGuid().ToString();
             localPlayer.data.id = localId;
             localPlayer.data.name = client.playerName;
@@ -125,6 +109,12 @@ namespace NuttinToLose {
             StartCoroutine(UpdateChannelRoutine());
 
             state = WorldState.Lobby;
+        }
+
+        void Update() {
+            foreach (var (id, track) in localTracks) {
+                Debug.Log(track.ReadyState);
+            }
         }
 
 
@@ -293,22 +283,16 @@ namespace NuttinToLose {
         }
         void ParsePlayer(string text) {
             var data = JsonUtility.FromJson<PlayerData>(text);
-            if (IsLocalPlayer(data.id)) {
-            } else {
-                UpdatePlayer(data);
+            if (!spawnedPlayers.ContainsKey(data.id)) {
+                SpawnPlayer(data);
             }
         }
-        void UpdatePlayer(PlayerData data) {
-            if (spawnedPlayers.TryGetValue(data.id, out var player)) {
-            } else {
-                player = Instantiate(playerPrefab, data.position, data.rotation);
-                spawnedPlayers[data.id] = player;
-                StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
-            }
-            //player.nutCount = data.nuts;
-            //player.data = data;
+        void SpawnPlayer(PlayerData data) {
+            var player = Instantiate(playerPrefab, data.position, data.rotation);
+            spawnedPlayers[data.id] = player;
+            StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
         }
-        void UpdatePlayerRTC(byte[] bytes) {
+        void UpdatePlayer(byte[] bytes) {
             string json = Encoding.UTF8.GetString(bytes);
             var data = JsonUtility.FromJson<PlayerData>(json);
             if (spawnedPlayers.TryGetValue(data.id, out var player)) {
@@ -316,8 +300,6 @@ namespace NuttinToLose {
                 player.data = data;
             }
         }
-        public bool IsLocalPlayer(string id) => localId == id;
-
         string StringifyDig(DigSpot spot) {
             return JsonUtility.ToJson(spot.data);
         }
@@ -337,15 +319,50 @@ namespace NuttinToLose {
 
 
 
+
         #region WebRTC
+        [Header("WebRTC")]
+        [SerializeField]
+        bool captureAudio = false;
         Dictionary<string, RTCPeerConnection> localConnections = new Dictionary<string, RTCPeerConnection>();
         Dictionary<string, RTCDataChannel> localDataChannels = new Dictionary<string, RTCDataChannel>();
+        Dictionary<string, MediaStreamTrack> localTracks = new Dictionary<string, MediaStreamTrack>();
         Dictionary<string, RTCPeerConnection> remoteConnections = new Dictionary<string, RTCPeerConnection>();
         Dictionary<string, RTCDataChannel> remoteDataChannels = new Dictionary<string, RTCDataChannel>();
         MediaStream audioStream;
         void StartRTC() {
             WebRTC.Initialize();
-            audioStream = Audio.CaptureStream();
+            if (captureAudio) {
+                audioStream = Audio.CaptureStream();
+            }
+        }
+        void StopRTC() {
+            foreach (var channel in remoteDataChannels.Values) {
+                channel.Close();
+                channel.Dispose();
+            }
+            remoteDataChannels.Clear();
+            foreach (var channel in localDataChannels.Values) {
+                channel.Close();
+                channel.Dispose();
+            }
+            localDataChannels.Clear();
+            foreach (var connection in remoteConnections.Values) {
+                connection.Close();
+                connection.Dispose();
+            }
+            remoteConnections.Clear();
+            foreach (var connection in localConnections.Values) {
+                connection.Close();
+                connection.Dispose();
+            }
+            localConnections.Clear();
+            foreach (var track in localTracks.Values) {
+                track.Stop();
+                track.Dispose();
+            }
+            localTracks.Clear();
+            WebRTC.Dispose();
         }
         IEnumerator CreateRemotePlayerConnectionRoutine(string id) {
             if (remoteConnections.ContainsKey(id)) {
@@ -354,8 +371,10 @@ namespace NuttinToLose {
             remoteConnections[id] = CreateConnection();
             remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
             remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-            foreach (var track in audioStream.GetTracks()) {
-                remoteConnections[id].AddTrack(track, audioStream);
+            if (audioStream != null) {
+                foreach (var track in audioStream.GetTracks()) {
+                    remoteConnections[id].AddTrack(track, audioStream);
+                }
             }
             var op = remoteConnections[id].CreateOffer();
             yield return op;
@@ -464,12 +483,13 @@ namespace NuttinToLose {
             localConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
             localConnections[id].OnTrack += eve => {
                 Debug.Log($"Received track {eve.Track.Id} of kind {eve.Track.Kind}");
+                localTracks[id] = eve.Track;
             };
             localConnections[id].OnDataChannel += channel => {
                 switch (channel.Label) {
                     case "data":
                         localDataChannels[id] = channel;
-                        channel.OnMessage += UpdatePlayerRTC;
+                        channel.OnMessage += UpdatePlayer;
                         Debug.Log($"Established data channel with {id}: {channel}");
                         break;
                     default:
