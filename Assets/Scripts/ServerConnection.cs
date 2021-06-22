@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Slothsoft.UnityExtensions;
 using Unity.WebRTC;
 using UnityEngine;
@@ -310,7 +311,14 @@ public class ServerConnection : MonoBehaviour {
         remoteConnections[id] = CreateConnection();
         remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
         remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-        remoteDataChannels[id].OnOpen += () => Debug.Log("REMOTE DATA CHANNEL OPENED");
+        remoteDataChannels[id].OnOpen += () => {
+            Debug.Log("REMOTE DATA CHANNEL OPENED");
+            remoteDataChannels[id].Send("Ping");
+        };
+        remoteDataChannels[id].OnMessage += message => {
+            string text = Encoding.UTF8.GetString(message);
+            Debug.Log($"Message from {id}: {text}");
+        };
         var op = remoteConnections[id].CreateOffer();
         yield return op;
         if (op.IsError) {
@@ -353,6 +361,12 @@ public class ServerConnection : MonoBehaviour {
             yield break;
         }
         desc = op.Desc;
+        var op2 = localConnections[remoteId].SetLocalDescription(ref desc);
+        yield return op2;
+        if (op2.IsError) {
+            Debug.LogError(op2.Error);
+            yield break;
+        }
         var message = new ServerSessionMessage {
             from = localId,
             to = remoteId,
@@ -392,7 +406,6 @@ public class ServerConnection : MonoBehaviour {
             sdpMLineIndex = message.sdpMLineIndex,
         };
         localConnections[id].AddIceCandidate(new RTCIceCandidate(ice));
-        Debug.Log($"Added ice {ice} to {localConnections[id]}!");
     }
     void CreateLocalPlayerConnection(string id) {
         if (localConnections.ContainsKey(id)) {
@@ -400,7 +413,14 @@ public class ServerConnection : MonoBehaviour {
         }
         localConnections[id] = CreateConnection();
         localDataChannels[id] = localConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-        localDataChannels[id].OnOpen += () => Debug.Log("LOCAL DATA CHANNEL OPENED");
+        localDataChannels[id].OnOpen += () => {
+            Debug.Log("LOCAL DATA CHANNEL OPENED");
+            localDataChannels[id].Send("Ping");
+        };
+        localDataChannels[id].OnMessage += message => {
+            string text = Encoding.UTF8.GetString(message);
+            Debug.Log($"Message from {id}: {text}");
+        };
     }
     IEnumerator CreateLocalPlayerAnswerRoutine(string id) {
         var op = localConnections[id].CreateAnswer();
@@ -422,7 +442,7 @@ public class ServerConnection : MonoBehaviour {
     public RTCPeerConnection CreateConnection() {
         var configuration = CreateConfiguration();
         var connection = new RTCPeerConnection(ref configuration);
-        connection.OnIceConnectionChange += OnIceConnectionChange;
+        //connection.OnIceConnectionChange += OnIceConnectionChange;
         return connection;
     }
     void OnIceConnectionChange(RTCIceConnectionState state) {
