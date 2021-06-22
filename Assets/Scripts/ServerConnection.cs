@@ -291,6 +291,7 @@ public class ServerConnection : MonoBehaviour {
         if (spawnedPlayers.TryGetValue(data.id, out var player)) {
         } else {
             player = Instantiate(playerPrefab, data.position, data.rotation);
+            Debug.Log($"Created player {player}");
             spawnedPlayers[data.id] = player;
             StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
         }
