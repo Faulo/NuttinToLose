@@ -6,7 +6,6 @@ using System.Text;
 using Slothsoft.UnityExtensions;
 using Unity.WebRTC;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
 namespace NuttinToLose {
@@ -428,6 +427,12 @@ namespace NuttinToLose {
                 sdpMLineIndex = candidate.SdpMLineIndex ?? 0,
             };
             //Debug.Log($"Sending in the name of {remoteId}:\n{JsonUtility.ToJson(message)}");
+            if (localConnections.TryGetValue(remoteId, out var connection)) {
+                connection.AddIceCandidate(candidate);
+            }
+            if (remoteConnections.TryGetValue(remoteId, out connection)) {
+                connection.AddIceCandidate(candidate);
+            }
             StartCoroutine(client.PushRoutine("rtc-ice", message));
         }
         void ReceiveICEMessage(ServerICEMessage message) {
@@ -438,9 +443,12 @@ namespace NuttinToLose {
                 sdpMid = message.sdpMid,
                 sdpMLineIndex = message.sdpMLineIndex,
             };
-            localConnections[id].AddIceCandidate(new RTCIceCandidate(ice));
-            if (remoteConnections.TryGetValue(id, out var connection)) {
-                connection.AddIceCandidate(new RTCIceCandidate(ice));
+            var candidate = new RTCIceCandidate(ice);
+            if (localConnections.TryGetValue(id, out var connection)) {
+                connection.AddIceCandidate(candidate);
+            }
+            if (remoteConnections.TryGetValue(id, out connection)) {
+                connection.AddIceCandidate(candidate);
             }
         }
         void CreateLocalPlayerConnection(string id) {
