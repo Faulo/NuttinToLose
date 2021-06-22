@@ -80,6 +80,22 @@ public class ServerConnection : MonoBehaviour {
     void OnEnable() {
     }
     void OnDisable() {
+        foreach (var channel in remoteDataChannels.Values) {
+            channel.Close();
+        }
+        foreach (var channel in localDataChannels.Values) {
+            channel.Close();
+        }
+        foreach (var connection in remoteConnections.Values) {
+            connection.Close();
+        }
+        foreach (var connection in localConnections.Values) {
+            connection.Close();
+        }
+        remoteDataChannels.Clear();
+        localDataChannels.Clear();
+        remoteConnections.Clear();
+        localConnections.Clear();
     }
 
     void Start() {
