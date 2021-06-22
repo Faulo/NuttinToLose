@@ -1,6 +1,8 @@
-public enum Season {
-    Spring,
-    Summer,
-    Fall,
-    Winter
+namespace NuttinToLose {
+    public enum Season {
+        Spring,
+        Summer,
+        Fall,
+        Winter
+    }
 }

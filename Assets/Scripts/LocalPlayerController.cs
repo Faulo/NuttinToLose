@@ -1,5 +1,7 @@
-public class LocalPlayerController : PlayerController {
+namespace NuttinToLose {
+    public class LocalPlayerController : PlayerController {
 
-    void FixedUpdate() {
+        void FixedUpdate() {
+        }
     }
 }
