@@ -22,6 +22,8 @@ public class ServerConnection : MonoBehaviour {
     PlayerController playerPrefab = default;
     [SerializeField, Range(0, 5)]
     float updateInterval = 1;
+    [SerializeField, Range(0, 5)]
+    float updateChannelInterval = 1;
     [SerializeField, Expandable]
     DigSpot spotPrefab = default;
 
@@ -119,6 +121,7 @@ public class ServerConnection : MonoBehaviour {
         };
 
         StartCoroutine(UpdatePlayerRoutine());
+        StartCoroutine(UpdateChannelRoutine());
 
         state = WorldState.Lobby;
     }
@@ -225,6 +228,13 @@ public class ServerConnection : MonoBehaviour {
         while (true) {
             string json = StringifyPlayer(localPlayer);
             yield return client.PushRoutine("update", json);
+            yield return wait;
+        }
+    }
+    IEnumerator UpdateChannelRoutine() {
+        var wait = new WaitForSeconds(updateChannelInterval);
+        while (true) {
+            string json = StringifyPlayer(localPlayer);
             foreach (var channel in remoteDataChannels.Values) {
                 if (channel.ReadyState == RTCDataChannelState.Open) {
                     channel.Send(json);
