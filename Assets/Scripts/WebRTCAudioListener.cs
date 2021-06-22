@@ -1,8 +1,11 @@
+#if !PLATFORM_WEBGL
 using Unity.WebRTC;
+#endif
 using UnityEngine;
 
 namespace NuttinToLose {
     public class WebRTCAudioListener : MonoBehaviour {
+#if !PLATFORM_WEBGL
         [SerializeField]
         bool useAudioListener = true;
         [SerializeField]
@@ -24,5 +27,6 @@ namespace NuttinToLose {
                 mic.GetData(buffer, 0);
             }
         }
+#endif
     }
 }

@@ -21,6 +21,7 @@ namespace NuttinToLose {
             sendButton.onClick.AddListener(PushMessage);
         }
         void HandleMessage(ServerSentEvent eve) {
+            Debug.Log(eve.type);
             switch (eve.type) {
                 case "message":
                     try {

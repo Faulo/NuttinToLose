@@ -11,8 +11,9 @@ using UnityEngine.Networking;
 namespace NuttinToLose {
     public class ServerSentEventClient : MonoBehaviour {
         public enum RequestAPI {
-            MicrosoftWebRequest,
-            UnityWebRequest
+            MicrosoftDotNet,
+            UnityNetworking,
+            SlothsoftJavaScript,
         }
         class PollState {
             public HttpWebRequest request;
@@ -47,20 +48,18 @@ namespace NuttinToLose {
                 poll = StartCoroutine(PollRoutine());
             }
         }
-        public IEnumerator PushRoutine(string type, ServerMessage data) => PushRoutine(type, JsonUtility.ToJson(data));
         public IEnumerator PushRoutine(string type, string data) {
             if (settings.isOffline) {
                 yield break;
             }
             string uri = settings.pushUrl + $"&room={Uri.EscapeDataString(settings.roomName)}&type={Uri.EscapeDataString(type)}";
             switch (settings.api) {
-                case RequestAPI.MicrosoftWebRequest: {
+                case RequestAPI.MicrosoftDotNet: {
                     static void callback(IAsyncResult result) {
                         var state = result.AsyncState as PushState;
                         var response = state.request.GetResponse();
                         state.isDone = true;
                     }
-                    //var request = WebRequest.CreateHttp(pushUrl + $"&type={Uri.EscapeDataString(type)}&data={Uri.EscapeDataString(data)}");
                     var request = WebRequest.CreateHttp(uri);
                     request.ContentType = "application/json";
                     request.Method = "POST";
@@ -72,7 +71,8 @@ namespace NuttinToLose {
                     yield return new WaitUntil(() => state.isDone);
                     break;
                 }
-                case RequestAPI.UnityWebRequest: {
+                case RequestAPI.UnityNetworking:
+                case RequestAPI.SlothsoftJavaScript: {
                     var uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(data));
                     var request = new UnityWebRequest(uri, "POST", null, uploadHandler);
                     yield return request.SendWebRequest();
@@ -89,7 +89,7 @@ namespace NuttinToLose {
             }
             string uri = settings.pullUrl + $"&room={Uri.EscapeDataString(settings.roomName)}&lastId={lastEvent.id}";
             switch (settings.api) {
-                case RequestAPI.MicrosoftWebRequest: {
+                case RequestAPI.MicrosoftDotNet: {
                     static void callback(IAsyncResult result) {
                         var state = result.AsyncState as PollState;
                         var stream = state.request.GetResponse().GetResponseStream();
@@ -121,14 +121,22 @@ namespace NuttinToLose {
                     request.BeginGetResponse(callback, state);
                     yield return new WaitUntil(() => state.isDone);
                     Debug.Log("Lost connection to server! Reconnecting...");
-                    yield return new WaitForSeconds(1);
                     poll = null;
                     break;
                 }
-                case RequestAPI.UnityWebRequest: {
+                case RequestAPI.UnityNetworking: {
                     var downloadHandler = new DownloadHandler(queue);
                     var request = new UnityWebRequest(uri, "GET", downloadHandler, null);
+                    request.SetRequestHeader("Accept", "text/plain");
                     yield return request.SendWebRequest();
+                    Debug.Log("Lost connection to server! Reconnecting...");
+                    poll = null;
+                    break;
+                }
+                case RequestAPI.SlothsoftJavaScript: {
+                    // https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
+                    // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+                    Debug.Log("TODO: Implement Server-Sent Events via custom JavaScript EventSource");
                     break;
                 }
                 default:
@@ -137,9 +145,10 @@ namespace NuttinToLose {
         }
 
         class DownloadHandler : DownloadHandlerScript {
+            const int BUFFER_SIZE = 10240;
             readonly Queue<ServerSentEvent> queue;
             readonly StringBuilder builder = new StringBuilder();
-            public DownloadHandler(Queue<ServerSentEvent> queue) : base() {
+            public DownloadHandler(Queue<ServerSentEvent> queue) : base(new byte[BUFFER_SIZE]) {
                 this.queue = queue;
             }
             protected override bool ReceiveData(byte[] data, int dataLength) {
