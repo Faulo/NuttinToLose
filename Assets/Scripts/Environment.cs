@@ -87,12 +87,14 @@ public class Environment : MonoBehaviour {
             obj.isStatic = true;
             UnityEditor.EditorUtility.SetDirty(obj);
         }
+#if UNITY_2021
         if (obj.TryGetComponent<Renderer>(out var renderer)) {
             if (!renderer.staticShadowCaster) {
                 renderer.staticShadowCaster = true;
                 UnityEditor.EditorUtility.SetDirty(renderer);
             }
         }
+#endif
     }
 #endif
 }
