@@ -310,17 +310,14 @@ public class ServerConnection : MonoBehaviour {
         }
         remoteConnections[id] = CreateConnection();
         remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
-        remoteConnections[id].OnDataChannel += channel => {
-            Debug.Log("DATA CHANNEL RECEIVED");
-            remoteDataChannels[id] = channel;
-            channel.OnOpen += () => {
-                Debug.Log("REMOTE DATA CHANNEL OPENED");
-                channel.Send("Ping");
-            };
-            channel.OnMessage += message => {
-                string text = Encoding.UTF8.GetString(message);
-                Debug.Log($"Message from {id}: {text}");
-            };
+        remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
+        remoteDataChannels[id].OnOpen += () => {
+            Debug.Log("REMOTE DATA CHANNEL OPENED");
+            remoteDataChannels[id].Send("Ping");
+        };
+        remoteDataChannels[id].OnMessage += message => {
+            string text = Encoding.UTF8.GetString(message);
+            Debug.Log($"Remote message from {id}: {text}");
         };
         var op = remoteConnections[id].CreateOffer();
         yield return op;
@@ -415,14 +412,17 @@ public class ServerConnection : MonoBehaviour {
             return;
         }
         localConnections[id] = CreateConnection();
-        localDataChannels[id] = localConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-        localDataChannels[id].OnOpen += () => {
-            Debug.Log("LOCAL DATA CHANNEL OPENED");
-            localDataChannels[id].Send("Ping");
-        };
-        localDataChannels[id].OnMessage += message => {
-            string text = Encoding.UTF8.GetString(message);
-            Debug.Log($"Message from {id}: {text}");
+        localConnections[id].OnDataChannel += channel => {
+            Debug.Log("DATA CHANNEL RECEIVED");
+            localDataChannels[id] = channel;
+            channel.OnOpen += () => {
+                Debug.Log("LOCAL DATA CHANNEL OPENED");
+                channel.Send("Ping");
+            };
+            channel.OnMessage += message => {
+                string text = Encoding.UTF8.GetString(message);
+                Debug.Log($"Local message from {id}: {text}");
+            };
         };
     }
     IEnumerator CreateLocalPlayerAnswerRoutine(string id) {
