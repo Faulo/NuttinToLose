@@ -120,14 +120,22 @@ namespace NuttinToLose {
                     request.BeginGetResponse(callback, state);
                     yield return new WaitUntil(() => state.isDone);
                     Debug.Log("Lost connection to server! Reconnecting...");
-                    yield return new WaitForSeconds(1);
                     poll = null;
                     break;
                 }
                 case RequestAPI.UnityWebRequest: {
                     var downloadHandler = new DownloadHandler(queue);
                     var request = new UnityWebRequest(uri, "GET", downloadHandler, null);
-                    yield return request.SendWebRequest();
+                    var op = request.SendWebRequest();
+                    ulong index = 0;
+                    while (!op.isDone) {
+                        if (index != request.downloadedBytes) {
+                            index = request.downloadedBytes;
+                            Debug.Log($"Downloaded {index}B so far");
+                        }
+                        yield return null;
+                    }
+                    poll = null;
                     break;
                 }
                 default:
@@ -136,13 +144,15 @@ namespace NuttinToLose {
         }
 
         class DownloadHandler : DownloadHandlerScript {
+            const int BUFFER_SIZE = 10240;
             readonly Queue<ServerSentEvent> queue;
             readonly StringBuilder builder = new StringBuilder();
-            public DownloadHandler(Queue<ServerSentEvent> queue) : base() {
+            public DownloadHandler(Queue<ServerSentEvent> queue) : base(new byte[BUFFER_SIZE]) {
                 this.queue = queue;
             }
             protected override bool ReceiveData(byte[] data, int dataLength) {
                 string text = Encoding.UTF8.GetString(data, 0, dataLength);
+                Debug.Log(text);
                 builder.Append(text);
                 text = builder.ToString();
                 bool didSomething = false;
