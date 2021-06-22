@@ -15,6 +15,6 @@ MonoBehaviour:
   api: 1
   pushUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=push
   pullUrl: http://slothsoft.net/getData.php/sse/server.vct?mode=pull
-  roomName: YourNutz
-  playerName: "Bh\xF6rnchen"
+  roomName: NuttinToLose
+  playerName: "Ah\xF6rnchen"
   isOffline: 0

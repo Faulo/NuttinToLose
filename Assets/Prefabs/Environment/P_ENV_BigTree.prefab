@@ -51,13 +51,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 722a1bac37b85a847ada2b41b8f96138, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 722a1bac37b85a847ada2b41b8f96138, type: 3}
       propertyPath: m_Name
       value: BigTree
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 722a1bac37b85a847ada2b41b8f96138, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 722a1bac37b85a847ada2b41b8f96138, type: 3}
@@ -117,13 +121,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6b68f7bb8ef56e945b00b0e5edefb779, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6b68f7bb8ef56e945b00b0e5edefb779, type: 3}
       propertyPath: m_Name
       value: BigTreeb
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6b68f7bb8ef56e945b00b0e5edefb779, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b68f7bb8ef56e945b00b0e5edefb779, type: 3}

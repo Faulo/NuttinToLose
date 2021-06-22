@@ -62,17 +62,36 @@ public class Environment : MonoBehaviour {
     class EnvironmentEditor : RuntimeEditorTools<Environment> {
         protected override void DrawEditorTools() {
             DrawButton("Remove MeshCollider", () => {
-                target.SetupCollider(target.fallInstance);
-                target.SetupCollider(target.winterInstance);
+                target.RemoveCollider(target.fallInstance);
+                target.RemoveCollider(target.winterInstance);
+            });
+            DrawButton("Update static flags", () => {
+                target.UpdateStaticFlags(target.fallInstance);
+                target.UpdateStaticFlags(target.winterInstance);
             });
         }
     }
-    void SetupCollider(GameObject obj) {
+    void RemoveCollider(GameObject obj) {
         if (!obj) {
             return;
         }
         if (obj.TryGetComponent<MeshCollider>(out var collider)) {
             DestroyImmediate(collider);
+        }
+    }
+    void UpdateStaticFlags(GameObject obj) {
+        if (!obj) {
+            return;
+        }
+        if (!obj.isStatic) {
+            obj.isStatic = true;
+            UnityEditor.EditorUtility.SetDirty(obj);
+        }
+        if (obj.TryGetComponent<Renderer>(out var renderer)) {
+            if (!renderer.staticShadowCaster) {
+                renderer.staticShadowCaster = true;
+                UnityEditor.EditorUtility.SetDirty(renderer);
+            }
         }
     }
 #endif

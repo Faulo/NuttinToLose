@@ -1,8 +1,7 @@
 {
-    "name": "YourNutz",
+    "name": "NuttinToLose",
     "rootNamespace": "",
     "references": [
-        "Unity.WebRTC",
         "Unity.InputSystem",
         "Cinemachine",
         "Slothsoft.UnityExtensions.Runtime",

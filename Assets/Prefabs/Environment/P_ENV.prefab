@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fallInstance: {fileID: 0}
   winterInstance: {fileID: 0}
-  manager: {fileID: 0}
+  server: {fileID: 0}
