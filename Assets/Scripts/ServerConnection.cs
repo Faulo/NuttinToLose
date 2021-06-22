@@ -335,6 +335,7 @@ public class ServerConnection : MonoBehaviour {
         WebRTC.Initialize();
     }
     IEnumerator CreateRemotePlayerConnectionRoutine(string id) {
+        Debug.Log($"Remote {id}: {remoteConnections.ContainsKey(id)}");
         if (remoteConnections.ContainsKey(id)) {
             yield break;
         }
