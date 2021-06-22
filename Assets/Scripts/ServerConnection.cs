@@ -207,7 +207,13 @@ public class ServerConnection : MonoBehaviour {
     IEnumerator UpdatePlayerRoutine() {
         var wait = new WaitForSeconds(updateInterval);
         while (true) {
-            yield return client.PushRoutine("update", StringifyPlayer(localPlayer));
+            string json = StringifyPlayer(localPlayer);
+            yield return client.PushRoutine("update", json);
+            foreach (var channel in remoteDataChannels.Values) {
+                if (channel.ReadyState == RTCDataChannelState.Open) {
+                    channel.Send(json);
+                }
+            }
             yield return wait;
         }
     }
@@ -272,8 +278,16 @@ public class ServerConnection : MonoBehaviour {
             spawnedPlayers[data.id] = player;
             StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
         }
-        player.nutCount = data.nuts;
-        player.data = data;
+        //player.nutCount = data.nuts;
+        //player.data = data;
+    }
+    void UpdatePlayerRTC(byte[] bytes) {
+        string json = Encoding.UTF8.GetString(bytes);
+        var data = JsonUtility.FromJson<PlayerData>(json);
+        if (spawnedPlayers.TryGetValue(data.id, out var player)) {
+            player.nutCount = data.nuts;
+            player.data = data;
+        }
     }
     public bool IsLocalPlayer(string id) => localId == id;
 
@@ -311,14 +325,6 @@ public class ServerConnection : MonoBehaviour {
         remoteConnections[id] = CreateConnection();
         remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
         remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-        remoteDataChannels[id].OnOpen += () => {
-            Debug.Log("REMOTE DATA CHANNEL OPENED");
-            remoteDataChannels[id].Send("Ping");
-        };
-        remoteDataChannels[id].OnMessage += message => {
-            string text = Encoding.UTF8.GetString(message);
-            Debug.Log($"Remote message from {id}: {text}");
-        };
         var op = remoteConnections[id].CreateOffer();
         yield return op;
         if (op.IsError) {
@@ -413,16 +419,8 @@ public class ServerConnection : MonoBehaviour {
         }
         localConnections[id] = CreateConnection();
         localConnections[id].OnDataChannel += channel => {
-            Debug.Log("DATA CHANNEL RECEIVED");
             localDataChannels[id] = channel;
-            channel.OnOpen += () => {
-                Debug.Log("LOCAL DATA CHANNEL OPENED");
-                channel.Send("Ping");
-            };
-            channel.OnMessage += message => {
-                string text = Encoding.UTF8.GetString(message);
-                Debug.Log($"Local message from {id}: {text}");
-            };
+            channel.OnMessage += UpdatePlayerRTC;
         };
     }
     IEnumerator CreateLocalPlayerAnswerRoutine(string id) {
