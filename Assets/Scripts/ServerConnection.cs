@@ -343,7 +343,7 @@ public class ServerConnection : MonoBehaviour {
             type = desc.type,
             sdp = desc.sdp,
         };
-        Debug.Log($"Sending offer:\n{JsonUtility.ToJson(message)}");
+        //Debug.Log($"Sending offer:\n{JsonUtility.ToJson(message)}");
         yield return client.PushRoutine("rtc-offer", message);
     }
     void ReceiveOfferMessage(ServerSessionMessage message) {
@@ -376,7 +376,7 @@ public class ServerConnection : MonoBehaviour {
             type = desc.type,
             sdp = desc.sdp,
         };
-        Debug.Log($"Sending answer:\n{JsonUtility.ToJson(message)}");
+        //Debug.Log($"Sending answer:\n{JsonUtility.ToJson(message)}");
         yield return client.PushRoutine("rtc-answer", message);
     }
     void ReceiveAnswerMessage(ServerSessionMessage message) {
@@ -386,7 +386,7 @@ public class ServerConnection : MonoBehaviour {
             sdp = message.sdp,
         };
         remoteConnections[remoteId].SetRemoteDescription(ref desc);
-        Debug.Log($"Set remote description {desc} to {remoteId}!");
+        //Debug.Log($"Set remote description {desc} to {remoteId}!");
     }
     void AddRemoteCandidate(string remoteId, RTCIceCandidate candidate) {
         // TODO: send this to whom it may concern
@@ -397,7 +397,7 @@ public class ServerConnection : MonoBehaviour {
             sdpMid = candidate.SdpMid,
             sdpMLineIndex = candidate.SdpMLineIndex ?? 0,
         };
-        Debug.Log($"Sending in the name of {remoteId}:\n{JsonUtility.ToJson(message)}");
+        //Debug.Log($"Sending in the name of {remoteId}:\n{JsonUtility.ToJson(message)}");
         StartCoroutine(client.PushRoutine("rtc-ice", message));
     }
     void ReceiveICEMessage(ServerICEMessage message) {
