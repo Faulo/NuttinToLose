@@ -435,6 +435,7 @@ public class ServerConnection : MonoBehaviour {
         }
         localConnections[id] = CreateConnection();
         localConnections[id].OnDataChannel += channel => {
+            Debug.Log($"Id: {channel.Id} Label: {channel.Label}");
             localDataChannels[id] = channel;
             channel.OnMessage += UpdatePlayerRTC;
         };
