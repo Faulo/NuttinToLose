@@ -4,8 +4,13 @@ using UnityEngine;
 namespace NuttinToLose {
     [CreateAssetMenu]
     public class ServerSentEventSettings : ScriptableObject {
+#if PLATFORM_WEBGL
+        public ServerSentEventClient.RequestAPI api => ServerSentEventClient.RequestAPI.SlothsoftJavaScript;
+#else
+        public ServerSentEventClient.RequestAPI api => m_api;
         [SerializeField]
-        public ServerSentEventClient.RequestAPI api = ServerSentEventClient.RequestAPI.MicrosoftWebRequest;
+        ServerSentEventClient.RequestAPI m_api = ServerSentEventClient.RequestAPI.MicrosoftDotNet;
+#endif
         [SerializeField]
         public string pushUrl = "http://slothsoft.net/getData.php/sse/server.vct?mode=push";
         [SerializeField]
