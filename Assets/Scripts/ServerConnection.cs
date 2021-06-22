@@ -230,12 +230,27 @@ public class ServerConnection : MonoBehaviour {
             case "world-state":
                 state = (WorldState)int.Parse(eve.data);
                 break;
-            case "rtc-ice":
+            case "rtc-ice": {
                 var message = JsonUtility.FromJson<ServerICEMessage>(eve.data);
                 if (message.to == localId) {
                     ReceiveICEMessage(message);
                 }
                 break;
+            }
+            case "rtc-offer": {
+                var message = JsonUtility.FromJson<ServerSessionMessage>(eve.data);
+                if (message.to == localId) {
+                    ReceiveOfferMessage(message);
+                }
+                break;
+            }
+            case "rtc-answer": {
+                var message = JsonUtility.FromJson<ServerSessionMessage>(eve.data);
+                if (message.to == localId) {
+                    ReceiveAnswerMessage(message);
+                }
+                break;
+            }
         }
     }
 
@@ -304,13 +319,57 @@ public class ServerConnection : MonoBehaviour {
         }
         yield return CreateOfferSuccess(id, op.Desc);
     }
-    IEnumerator CreateOfferSuccess(string id, RTCSessionDescription desc) {
-        var op = remoteConnections[id].SetLocalDescription(ref desc);
+    IEnumerator CreateOfferSuccess(string remoteId, RTCSessionDescription desc) {
+        var op = remoteConnections[remoteId].SetLocalDescription(ref desc);
         yield return op;
         if (op.IsError) {
             Debug.LogError(op.Error);
             yield break;
         }
+        var message = new ServerSessionMessage {
+            from = localId,
+            to = remoteId,
+            type = desc.type,
+            sdp = desc.sdp,
+        };
+        Debug.Log($"Sending offer:\n{JsonUtility.ToJson(message)}");
+        yield return client.PushRoutine("rtc-offer", message);
+    }
+    void ReceiveOfferMessage(ServerSessionMessage message) {
+        string id = message.from;
+        CreateLocalPlayerConnection(id);
+        var desc = new RTCSessionDescription {
+            type = message.type,
+            sdp = message.sdp,
+        };
+        StartCoroutine(ReceiveOfferMessageRoutine(id, desc));
+    }
+    IEnumerator ReceiveOfferMessageRoutine(string remoteId, RTCSessionDescription desc) {
+        localConnections[remoteId].SetRemoteDescription(ref desc);
+        var op = localConnections[remoteId].CreateAnswer();
+        yield return op;
+        if (op.IsError) {
+            Debug.LogError(op.Error);
+            yield break;
+        }
+        desc = op.Desc;
+        var message = new ServerSessionMessage {
+            from = localId,
+            to = remoteId,
+            type = desc.type,
+            sdp = desc.sdp,
+        };
+        Debug.Log($"Sending answer:\n{JsonUtility.ToJson(message)}");
+        yield return client.PushRoutine("rtc-answer", message);
+    }
+    void ReceiveAnswerMessage(ServerSessionMessage message) {
+        string remoteId = message.from;
+        var desc = new RTCSessionDescription {
+            type = message.type,
+            sdp = message.sdp,
+        };
+        remoteConnections[remoteId].SetRemoteDescription(ref desc);
+        Debug.Log($"Set remote description {desc} to {remoteId}!");
     }
     void AddRemoteCandidate(string remoteId, RTCIceCandidate candidate) {
         // TODO: send this to whom it may concern
