@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
@@ -136,13 +137,25 @@ namespace NuttinToLose {
                 case RequestAPI.SlothsoftJavaScript: {
                     // https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
                     // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
-                    Debug.Log("TODO: Implement Server-Sent Events via custom JavaScript EventSource");
+                    // Debug.Log("TODO: Implement Server-Sent Events via custom JavaScript EventSource");
+#if PLATFORM_WEBGL
+                    StartPolling(uri);
+#else
+                    Debug.LogError($"{nameof(RequestAPI.SlothsoftJavaScript)} is only available in WebGL builds!");
+#endif
                     break;
                 }
                 default:
                     throw new NotImplementedException();
             }
         }
+#if PLATFORM_WEBGL
+        [DllImport("__Internal")]
+        static extern void StartPolling(string uri);
+        void OnServerSentEvent(string message) {
+            Debug.Log(message);
+        }
+#endif
 
         class DownloadHandler : DownloadHandlerScript {
             const int BUFFER_SIZE = 10240;
