@@ -152,7 +152,8 @@ namespace NuttinToLose {
 #if PLATFORM_WEBGL
         [DllImport("__Internal")]
         static extern void StartPolling(string uri);
-        void OnServerSentEvent(string message) {
+
+        protected void OnServerSentEvent(string message) {
             Debug.Log(message);
         }
 #endif

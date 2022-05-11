@@ -1,7 +1,18 @@
+var eventSource;
+
 mergeInto(LibraryManager.library, {
-  StartPolling: function (url) {
-	  url = Pointer_stringify(url);
-      window.alert(url);
-	  unityInstance.SendMessage('ServerConnection', 'OnServerSentEvent', url);
-  },
+	StartPolling: function (url) {
+		url = UTF8ToString(url);
+		
+		eventSource = new EventSource(url);
+		
+		eventSource.addEventListener(
+			"message",
+			(eve) => {
+				window.alert(eve.type + "\n" + eve.id + "\n" + eve.data);
+				// SendMessage('ServerConnection', 'OnServerSentEvent', url);
+			},
+			false
+		);
+	},
 });
