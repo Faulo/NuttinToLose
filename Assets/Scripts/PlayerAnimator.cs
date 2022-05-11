@@ -11,10 +11,10 @@ namespace NuttinToLose {
         [SerializeField]
         Animator animator = default;
 
-        void Awake() {
+        protected void Awake() {
             OnValidate();
         }
-        void OnValidate() {
+        protected void OnValidate() {
             if (!player) {
                 player = GetComponentInParent<PlayerController>();
             }
@@ -22,7 +22,7 @@ namespace NuttinToLose {
                 animator = GetComponent<Animator>();
             }
         }
-        void Update() {
+        protected void Update() {
             animator.SetFloat(nameof(Parameters.speed), player.data.speed);
             animator.SetInteger(nameof(Parameters.state), player.data.state);
         }

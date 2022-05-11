@@ -13,10 +13,10 @@ namespace NuttinToLose {
         Camera referenceCamera = default;
         [SerializeField]
         Vector3 offset = Vector3.up;
-        void Awake() {
+        protected void Awake() {
             OnValidate();
         }
-        void OnValidate() {
+        protected void OnValidate() {
             if (!player) {
                 player = GetComponentInParent<PlayerController>();
             }
@@ -30,12 +30,11 @@ namespace NuttinToLose {
                 referenceCamera = Camera.main;
             }
         }
-        void Start() {
+        protected void Start() {
             canvas.worldCamera = referenceCamera;
         }
-        void LateUpdate() {
-            transform.position = player.transform.position + offset;
-            transform.rotation = referenceCamera.transform.rotation;
+        protected void LateUpdate() {
+            transform.SetPositionAndRotation(player.transform.position + offset, referenceCamera.transform.rotation);
             label.text = player.data.name;
         }
     }

@@ -10,13 +10,13 @@ namespace NuttinToLose {
         [SerializeField]
         ServerConnection server = default;
 
-        void Awake() {
+        protected void Awake() {
             OnValidate();
         }
-        void OnEnable() {
+        protected void OnEnable() {
             server.onStateEnter += HandleState;
         }
-        void OnDisable() {
+        protected void OnDisable() {
             server.onStateEnter -= HandleState;
         }
         void HandleState(WorldState state) {
@@ -33,11 +33,11 @@ namespace NuttinToLose {
                     break;
             }
         }
-        void Start() {
+        protected void Start() {
             fallInstance.SetActive(false);
             winterInstance.SetActive(true);
         }
-        void OnValidate() {
+        protected void OnValidate() {
             if (!server) {
                 server = FindObjectOfType<ServerConnection>();
             }
@@ -89,12 +89,12 @@ namespace NuttinToLose {
                 UnityEditor.EditorUtility.SetDirty(obj);
             }
 #if UNITY_2021
-        if (obj.TryGetComponent<Renderer>(out var renderer)) {
-            if (!renderer.staticShadowCaster) {
-                renderer.staticShadowCaster = true;
-                UnityEditor.EditorUtility.SetDirty(renderer);
+            if (obj.TryGetComponent<Renderer>(out var renderer)) {
+                if (!renderer.staticShadowCaster) {
+                    renderer.staticShadowCaster = true;
+                    UnityEditor.EditorUtility.SetDirty(renderer);
+                }
             }
-        }
 #endif
         }
 #endif

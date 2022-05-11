@@ -14,7 +14,7 @@ namespace NuttinToLose {
         bool foundGround;
         bool foundSpot;
 
-        void OnTriggerStay(Collider other) {
+        protected void OnTriggerStay(Collider other) {
             int layer = 1 << other.gameObject.layer;
             if ((layer & groundLayers.value) == layer) {
                 foundGround = true;
@@ -31,7 +31,7 @@ namespace NuttinToLose {
             }
         }
 
-        void FixedUpdate() {
+        protected void FixedUpdate() {
             if (foundGround) {
                 foundGround = false;
             } else {

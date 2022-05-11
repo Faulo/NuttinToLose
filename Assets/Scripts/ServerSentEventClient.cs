@@ -34,13 +34,13 @@ namespace NuttinToLose {
         [SerializeField, Expandable]
         ServerSentEventSettings settings = default;
         [SerializeField]
-        ServerSentEvent lastEvent = new ServerSentEvent();
+        ServerSentEvent lastEvent = new();
 
         HttpWebRequest request;
-        Queue<ServerSentEvent> queue = new Queue<ServerSentEvent>();
+        Queue<ServerSentEvent> queue = new();
         Coroutine poll;
 
-        void FixedUpdate() {
+        protected void FixedUpdate() {
             while (queue.Count > 0) {
                 lastEvent = queue.Dequeue();
                 onMessage?.Invoke(lastEvent);
@@ -160,7 +160,7 @@ namespace NuttinToLose {
         class DownloadHandler : DownloadHandlerScript {
             const int BUFFER_SIZE = 10240;
             readonly Queue<ServerSentEvent> queue;
-            readonly StringBuilder builder = new StringBuilder();
+            readonly StringBuilder builder = new();
             public DownloadHandler(Queue<ServerSentEvent> queue) : base(new byte[BUFFER_SIZE]) {
                 this.queue = queue;
             }
@@ -172,7 +172,7 @@ namespace NuttinToLose {
                 for (int i = text.IndexOf("\n\n"); i != -1; i = text.IndexOf("\n\n")) {
                     didSomething = true;
                     string[] lines = text.Substring(0, i).Split('\n');
-                    text = text.Substring(i + 2);
+                    text = text[(i + 2)..];
                     if (TryParseEvent(lines, out var eve)) {
                         queue.Enqueue(eve);
                     }
@@ -190,15 +190,15 @@ namespace NuttinToLose {
             bool hasData = false;
             foreach (string line in lines) {
                 if (line.StartsWith("id:")) {
-                    eve.id = int.Parse(line.Substring("id:".Length).Trim());
+                    eve.id = int.Parse(line["id:".Length..].Trim());
                     hasData = true;
                 }
                 if (line.StartsWith("event:")) {
-                    eve.type = line.Substring("event:".Length).Trim();
+                    eve.type = line["event:".Length..].Trim();
                     hasData = true;
                 }
                 if (line.StartsWith("data:")) {
-                    eve.data = line.Substring("data:".Length).Trim();
+                    eve.data = line["data:".Length..].Trim();
                     hasData = true;
                 }
             }

@@ -16,7 +16,7 @@ namespace NuttinToLose {
         [SerializeField]
         Button sendButton = default;
 
-        void Start() {
+        protected void Start() {
             client.onMessage += HandleMessage;
             sendButton.onClick.AddListener(PushMessage);
         }

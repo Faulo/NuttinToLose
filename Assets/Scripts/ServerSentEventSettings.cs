@@ -22,7 +22,7 @@ namespace NuttinToLose {
         [SerializeField]
         public bool isOffline = false;
 
-        void OnValidate() {
+        protected void OnValidate() {
             roomName = Regex.Replace(roomName, "[^a-zA-Zöäüß]+", "");
             if (roomName == "") {
                 roomName = "YourNutz";

@@ -16,17 +16,17 @@ namespace NuttinToLose {
         [SerializeField]
         Camera referenceCamera = default;
         [SerializeField]
-        InputAction moveAction = new InputAction();
+        InputAction moveAction = new();
         [SerializeField]
-        InputAction lookAction = new InputAction();
+        InputAction lookAction = new();
         [SerializeField]
-        InputAction jumpAction = new InputAction();
+        InputAction jumpAction = new();
         [SerializeField]
-        InputAction realDigAction = new InputAction();
+        InputAction realDigAction = new();
         [SerializeField]
-        InputAction fakeDigAction = new InputAction();
+        InputAction fakeDigAction = new();
         [SerializeField]
-        InputAction digUpAction = new InputAction();
+        InputAction digUpAction = new();
 
         Vector2 intendedMove;
         Vector2 intendedLook;
@@ -82,7 +82,7 @@ namespace NuttinToLose {
         bool canStartJump;
         float digTimer;
 
-        void OnEnable() {
+        protected void OnEnable() {
             moveAction.Enable();
             lookAction.Enable();
             jumpAction.Enable();
@@ -91,7 +91,7 @@ namespace NuttinToLose {
             digUpAction.Enable();
             server.onStateEnter += HandleStateChange;
         }
-        void OnDisable() {
+        protected void OnDisable() {
             moveAction.Disable();
             lookAction.Disable();
             jumpAction.Disable();
@@ -117,10 +117,10 @@ namespace NuttinToLose {
                     throw new NotImplementedException(state.ToString());
             }
         }
-        void Awake() {
+        protected void Awake() {
             OnValidate();
         }
-        void OnValidate() {
+        protected void OnValidate() {
             if (!player) {
                 player = GetComponentInParent<PlayerController>();
             }
@@ -132,7 +132,7 @@ namespace NuttinToLose {
             }
         }
 
-        void FixedUpdate() {
+        protected void FixedUpdate() {
             UpdateIntentions();
 
             var position = player.attachedRigidbody.position;
@@ -149,7 +149,7 @@ namespace NuttinToLose {
 
             ProcessJump(ref currentVelocity);
 
-            currentVelocity += Physics.gravity * currentSettings.gravity * Time.deltaTime;
+            currentVelocity += currentSettings.gravity * Time.deltaTime * Physics.gravity;
 
             player.attachedRigidbody.velocity = currentVelocity;
             if (direction.magnitude > rotationDeadzone) {

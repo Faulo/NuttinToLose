@@ -16,6 +16,7 @@ namespace NuttinToLose {
             }
         }
 
+#pragma warning disable UNT0021 // Prefer protected Unity Message.
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
             Init(animator);
             particleInstance.Play();
@@ -25,5 +26,6 @@ namespace NuttinToLose {
                 particleInstance.Stop();
             }
         }
+#pragma warning restore UNT0021 // Prefer protected Unity Message.
     }
 }

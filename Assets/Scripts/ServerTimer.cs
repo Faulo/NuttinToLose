@@ -8,7 +8,7 @@ namespace NuttinToLose {
         TextMeshProUGUI text = default;
         [SerializeField]
         public float time = 0;
-        void Update() {
+        protected void Update() {
             var span = TimeSpan.FromSeconds(time);
             text.text = time >= 0
                 ? span.ToString(@"mm\:ss")

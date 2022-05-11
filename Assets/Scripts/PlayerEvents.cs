@@ -5,27 +5,27 @@ namespace NuttinToLose {
         [SerializeField]
         PlayerController player = default;
         [SerializeField]
-        GameObjectEvent onRealDig = new GameObjectEvent();
+        GameObjectEvent onRealDig = new();
         [SerializeField]
-        GameObjectEvent onFakeDig = new GameObjectEvent();
+        GameObjectEvent onFakeDig = new();
         [SerializeField]
-        GameObjectEvent onDigUpReal = new GameObjectEvent();
+        GameObjectEvent onDigUpReal = new();
         [SerializeField]
-        GameObjectEvent onDigUpFake = new GameObjectEvent();
+        GameObjectEvent onDigUpFake = new();
         [SerializeField]
-        GameObjectEvent onNutCountUp = new GameObjectEvent();
+        GameObjectEvent onNutCountUp = new();
         [SerializeField]
-        GameObjectEvent onNutCountDown = new GameObjectEvent();
+        GameObjectEvent onNutCountDown = new();
 
-        void Awake() {
+        protected void Awake() {
             OnValidate();
         }
-        void OnValidate() {
+        protected void OnValidate() {
             if (!player) {
                 player = GetComponentInParent<PlayerController>();
             }
         }
-        void Start() {
+        protected void Start() {
             player.onRealDig += () => onRealDig.Invoke(player.gameObject);
             player.onFakeDig += () => onFakeDig.Invoke(player.gameObject);
             player.onDigUp += spot => {

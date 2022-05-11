@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Slothsoft.UnityExtensions;
 #if !PLATFORM_WEBGL
 using Unity.WebRTC;
@@ -28,9 +27,9 @@ namespace NuttinToLose {
         [SerializeField, Expandable]
         DigSpot spotPrefab = default;
 
-        Dictionary<string, PlayerController> spawnedPlayers = new Dictionary<string, PlayerController>();
+        Dictionary<string, PlayerController> spawnedPlayers = new();
 
-        Dictionary<string, DigSpot> digs = new Dictionary<string, DigSpot>();
+        Dictionary<string, DigSpot> digs = new();
 
         [Header("Player Spawn")]
         [SerializeField]
@@ -42,7 +41,7 @@ namespace NuttinToLose {
 
         [Header("Input")]
         [SerializeField]
-        InputAction startAction = new InputAction();
+        InputAction startAction = new();
 
         [Header("Time")]
         [SerializeField, Range(0, 1000)]
@@ -73,25 +72,25 @@ namespace NuttinToLose {
             .Select(player => player.data)
             .OrderByDescending(data => data.nuts);
 
-        void OnDrawGizmos() {
+        protected void OnDrawGizmos() {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(spawnSpot.transform.position, spawnRadius);
             if (localPlayer) {
                 localPlayer.transform.position = spawnSpot.transform.position;
             }
         }
-        void OnEnable() {
+        protected void OnEnable() {
 #if !PLATFORM_WEBGL
             StartRTC();
 #endif
         }
-        void OnDisable() {
+        protected void OnDisable() {
 #if !PLATFORM_WEBGL
             StopRTC();
 #endif
         }
 
-        void Start() {
+        protected void Start() {
             localId = Guid.NewGuid().ToString();
             localPlayer.data.id = localId;
             localPlayer.data.name = client.playerName;
@@ -280,6 +279,7 @@ namespace NuttinToLose {
             StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
 #endif
         }
+#if !PLATFORM_WEBGL
         void UpdatePlayer(byte[] bytes) {
             string json = Encoding.UTF8.GetString(bytes);
             var data = JsonUtility.FromJson<PlayerData>(json);
@@ -288,6 +288,7 @@ namespace NuttinToLose {
                 player.data = data;
             }
         }
+#endif
         string StringifyDig(DigSpot spot) {
             return JsonUtility.ToJson(spot.data);
         }
