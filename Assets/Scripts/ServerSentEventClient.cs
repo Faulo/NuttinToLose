@@ -121,8 +121,6 @@ namespace NuttinToLose {
                     var state = new PollState { request = request, queue = queue };
                     request.BeginGetResponse(callback, state);
                     yield return new WaitUntil(() => state.isDone);
-                    Debug.Log("Lost connection to server! Reconnecting...");
-                    poll = null;
                     break;
                 }
                 case RequestAPI.UnityNetworking: {
@@ -130,8 +128,6 @@ namespace NuttinToLose {
                     var request = new UnityWebRequest(uri, "GET", downloadHandler, null);
                     request.SetRequestHeader("Accept", "text/plain");
                     yield return request.SendWebRequest();
-                    Debug.Log("Lost connection to server! Reconnecting...");
-                    poll = null;
                     break;
                 }
                 case RequestAPI.SlothsoftJavaScript: {
@@ -140,6 +136,7 @@ namespace NuttinToLose {
                     // Debug.Log("TODO: Implement Server-Sent Events via custom JavaScript EventSource");
 #if PLATFORM_WEBGL
                     StartPolling(uri);
+                    yield return new WaitUntil(() => false);
 #else
                     Debug.LogError($"{nameof(RequestAPI.SlothsoftJavaScript)} is only available in WebGL builds!");
 #endif
@@ -148,13 +145,19 @@ namespace NuttinToLose {
                 default:
                     throw new NotImplementedException();
             }
+            Debug.Log("Lost connection to server! Reconnecting...");
+            poll = null;
         }
 #if PLATFORM_WEBGL
         [DllImport("__Internal")]
         static extern void StartPolling(string uri);
 
         protected void OnServerSentEvent(string message) {
-            Debug.Log(message);
+            if (string.IsNullOrEmpty(message)) {
+                return;
+            }
+            var obj = JsonUtility.FromJson<ServerSentEvent>(message);
+            queue.Enqueue(obj);
         }
 #endif
 
