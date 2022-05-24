@@ -134,7 +134,7 @@ namespace NuttinToLose {
                     // https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html
                     // https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
                     // Debug.Log("TODO: Implement Server-Sent Events via custom JavaScript EventSource");
-#if PLATFORM_WEBGL
+#if PLATFORM_WEBGL && !UNITY_EDITOR
                     StartPolling(uri);
                     yield return new WaitUntil(() => false);
 #else
@@ -148,7 +148,7 @@ namespace NuttinToLose {
             Debug.Log("Lost connection to server! Reconnecting...");
             poll = null;
         }
-#if PLATFORM_WEBGL
+#if PLATFORM_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
         static extern void StartPolling(string uri);
 

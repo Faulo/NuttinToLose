@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NuttinToLose {
     [CreateAssetMenu]
     public class ServerSentEventSettings : ScriptableObject {
-#if PLATFORM_WEBGL
+#if PLATFORM_WEBGL && !UNITY_EDITOR
         public ServerSentEventClient.RequestAPI api => ServerSentEventClient.RequestAPI.SlothsoftJavaScript;
 #else
         public ServerSentEventClient.RequestAPI api => m_api;
