@@ -119,11 +119,13 @@ namespace NuttinToLose.Networking {
         IEnumerator ReceiveOfferMessage_Co(string remoteId, RTCSessionDescription desc) {
             localConnections[remoteId].SetRemoteDescription(ref desc);
             var op = localConnections[remoteId].CreateAnswer();
+
             yield return op;
             if (op.IsError) {
                 Debug.LogError(op.Error);
                 yield break;
             }
+
             desc = op.Desc;
             var op2 = localConnections[remoteId].SetLocalDescription(ref desc);
             yield return op2;
