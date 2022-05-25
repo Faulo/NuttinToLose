@@ -2,7 +2,7 @@
 using System;
 using Unity.WebRTC;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     [Serializable]
     public class ServerSessionMessage : ServerMessage {
         public RTCSdpType type;

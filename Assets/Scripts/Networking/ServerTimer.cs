@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     public class ServerTimer : MonoBehaviour {
         [SerializeField]
         TextMeshProUGUI text = default;

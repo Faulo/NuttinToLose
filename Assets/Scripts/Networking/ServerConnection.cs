@@ -9,7 +9,7 @@ using Unity.WebRTC;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     public class ServerConnection : MonoBehaviour {
         public event Action<WorldState> onStateEnter;
         public event Action<WorldState> onStateExit;
@@ -62,7 +62,7 @@ namespace NuttinToLose {
                     onStateExit?.Invoke(stateCache);
                     stateCache = value;
                     onStateEnter?.Invoke(stateCache);
-                    StartCoroutine(client.PushRoutine("world-state", ((int)stateCache).ToString()));
+                    client.PushMessage("world-state", ((int)stateCache).ToString());
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace NuttinToLose {
         void HandleDigUp(DigSpot spot) {
             string id = spot.data.id;
             if (digs.Remove(id)) {
-                StartCoroutine(client.PushRoutine("remove-dig", StringifyDig(spot)));
+                client.PushMessage("remove-dig", StringifyDig(spot));
             }
             spot.GetDugUp();
         }
@@ -189,7 +189,7 @@ namespace NuttinToLose {
             };
             var spot = CreateDig(data);
             digs[data.id] = spot;
-            StartCoroutine(client.PushRoutine("create-dig", StringifyDig(spot)));
+            client.PushMessage("create-dig", StringifyDig(spot));
         }
 
         void HandleRealDig() {
@@ -200,7 +200,7 @@ namespace NuttinToLose {
             };
             var spot = CreateDig(data);
             digs[data.id] = spot;
-            StartCoroutine(client.PushRoutine("create-dig", StringifyDig(spot)));
+            client.PushMessage("create-dig", StringifyDig(spot));
         }
 
         DigSpot CreateDig(DigData data) {
@@ -213,7 +213,7 @@ namespace NuttinToLose {
             var wait = new WaitForSeconds(updateInterval);
             while (true) {
                 string json = StringifyPlayer(localPlayer);
-                yield return client.PushRoutine("update", json);
+                yield return client.PushMessage("update", json);
                 yield return wait;
             }
         }
@@ -222,7 +222,7 @@ namespace NuttinToLose {
             //Debug.Log(eve.type);
             switch (eve.type) {
                 case "start":
-                    StartCoroutine(client.PushRoutine("spawn", StringifyPlayer(localPlayer)));
+                    client.PushMessage("spawn", StringifyPlayer(localPlayer));
                     break;
                 case "spawn":
                 case "update":

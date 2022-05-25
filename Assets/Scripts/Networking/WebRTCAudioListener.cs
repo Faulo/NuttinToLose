@@ -3,7 +3,7 @@ using Unity.WebRTC;
 #endif
 using UnityEngine;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     public class WebRTCAudioListener : MonoBehaviour {
 #if !PLATFORM_WEBGL
         [SerializeField]

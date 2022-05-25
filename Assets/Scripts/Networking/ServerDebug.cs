@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     public class ServerDebug : MonoBehaviour {
         class Message {
             public string text;
@@ -34,7 +34,7 @@ namespace NuttinToLose {
             }
         }
         void PushMessage() {
-            StartCoroutine(client.PushRoutine("message", JsonUtility.ToJson(new Message { text = messageInput.text })));
+            client.PushMessage("message", JsonUtility.ToJson(new Message { text = messageInput.text }));
         }
     }
 }

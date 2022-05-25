@@ -1,16 +1,28 @@
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     [CreateAssetMenu]
     public class ServerSentEventSettings : ScriptableObject {
+        enum RequestAPI {
+            MicrosoftDotNet,
+            UnityNetworking,
+            SlothsoftJavaScript,
+        }
 #if PLATFORM_WEBGL && !UNITY_EDITOR
-        public ServerSentEventClient.RequestAPI api => ServerSentEventClient.RequestAPI.SlothsoftJavaScript;
+        RequestAPI api => RequestAPI.SlothsoftJavaScript;
 #else
-        public ServerSentEventClient.RequestAPI api => m_api;
+        RequestAPI api => m_api;
         [SerializeField]
-        ServerSentEventClient.RequestAPI m_api = ServerSentEventClient.RequestAPI.MicrosoftDotNet;
+        RequestAPI m_api = RequestAPI.MicrosoftDotNet;
 #endif
+        public IServerSentEventConnection apiConnection => api switch {
+            RequestAPI.MicrosoftDotNet => SSEMicrosoftDotNet.instance,
+            RequestAPI.UnityNetworking => SSEUnityNetworking.instance,
+            RequestAPI.SlothsoftJavaScript => SSESlothsoftJavaScript.instance,
+            _ => throw new System.NotImplementedException(),
+        };
+
         [SerializeField]
         public string pushUrl = "http://slothsoft.net/getData.php/sse/server.vct?mode=push";
         [SerializeField]
@@ -18,18 +30,18 @@ namespace NuttinToLose {
         [SerializeField]
         public string roomName = "YourNutz";
         [SerializeField]
-        public string playerName = "Ahörnchen";
+        public string playerName = "Ahï¿½rnchen";
         [SerializeField]
         public bool isOffline = false;
 
         protected void OnValidate() {
-            roomName = Regex.Replace(roomName, "[^a-zA-Zöäüß]+", "");
+            roomName = Regex.Replace(roomName, "[^a-zA-Zï¿½ï¿½ï¿½ï¿½]+", "");
             if (roomName == "") {
                 roomName = "YourNutz";
             }
-            playerName = Regex.Replace(playerName, "[^a-zA-Zöäüß]+", "");
+            playerName = Regex.Replace(playerName, "[^a-zA-Zï¿½ï¿½ï¿½ï¿½]+", "");
             if (playerName == "") {
-                playerName = "Ahörnchen";
+                playerName = "Ahï¿½rnchen";
             }
         }
 

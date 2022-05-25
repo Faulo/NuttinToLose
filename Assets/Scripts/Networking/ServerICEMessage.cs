@@ -1,7 +1,7 @@
 #if !PLATFORM_WEBGL
 using System;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     [Serializable]
     public class ServerICEMessage : ServerMessage {
         public string candidate;

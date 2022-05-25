@@ -1,6 +1,6 @@
 using System;
 
-namespace NuttinToLose {
+namespace NuttinToLose.Networking {
     [Serializable]
     public class ServerSentEvent {
         public int id;
