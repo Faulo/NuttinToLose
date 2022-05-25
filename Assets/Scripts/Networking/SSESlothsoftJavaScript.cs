@@ -1,5 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+#if PLATFORM_WEBGL && !UNITY_EDITOR
+using System.Runtime.InteropServices;
+using UnityEngine;
+#endif
 
 namespace NuttinToLose.Networking {
     public class SSESlothsoftJavaScript : IServerSentEventConnection {
