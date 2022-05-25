@@ -1,4 +1,3 @@
-#if !PLATFORM_WEBGL
 using System;
 using Unity.WebRTC;
 
@@ -9,4 +8,3 @@ namespace NuttinToLose.Networking {
         public string sdp;
     }
 }
-#endif

@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Slothsoft.UnityExtensions;
-#if !PLATFORM_WEBGL
 using Unity.WebRTC;
-#endif
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -80,14 +79,10 @@ namespace NuttinToLose.Networking {
             }
         }
         protected void OnEnable() {
-#if !PLATFORM_WEBGL
             StartRTC();
-#endif
         }
         protected void OnDisable() {
-#if !PLATFORM_WEBGL
             StopRTC();
-#endif
         }
 
         protected void Start() {
@@ -237,7 +232,6 @@ namespace NuttinToLose.Networking {
                 case "world-state":
                     state = (WorldState)int.Parse(eve.data);
                     break;
-#if !PLATFORM_WEBGL
                 case "rtc-ice": {
                     var message = JsonUtility.FromJson<ServerICEMessage>(eve.data);
                     if (message.to == localId) {
@@ -259,7 +253,6 @@ namespace NuttinToLose.Networking {
                     }
                     break;
                 }
-#endif
             }
         }
 
@@ -275,11 +268,8 @@ namespace NuttinToLose.Networking {
         void SpawnPlayer(PlayerData data) {
             var player = Instantiate(playerPrefab, data.position, data.rotation);
             spawnedPlayers[data.id] = player;
-#if !PLATFORM_WEBGL
             StartCoroutine(CreateRemotePlayerConnectionRoutine(data.id));
-#endif
         }
-#if !PLATFORM_WEBGL
         void UpdatePlayer(byte[] bytes) {
             string json = Encoding.UTF8.GetString(bytes);
             var data = JsonUtility.FromJson<PlayerData>(json);
@@ -288,7 +278,6 @@ namespace NuttinToLose.Networking {
                 player.data = data;
             }
         }
-#endif
         string StringifyDig(DigSpot spot) {
             return JsonUtility.ToJson(spot.data);
         }
@@ -310,7 +299,6 @@ namespace NuttinToLose.Networking {
 
 
         #region WebRTC
-#if !PLATFORM_WEBGL
         [Header("WebRTC")]
         [SerializeField]
         bool captureAudio = false;
@@ -325,11 +313,11 @@ namespace NuttinToLose.Networking {
         void StartRTC() {
             WebRTC.Initialize();
             if (captureAudio) {
-                audioStream = Audio.CaptureStream();
+                //audioStream = Audio.CaptureStream();
             }
             StartCoroutine(UpdateChannelRoutine());
         }
-        IEnumerator PushMessageRoutine(string type, ServerMessage data) => client.PushRoutine(type, JsonUtility.ToJson(data));
+        Coroutine PushMessage(string type, ServerMessage data) => client.PushMessage(type, JsonUtility.ToJson(data));
         IEnumerator UpdateChannelRoutine() {
             var wait = new WaitForSeconds(updateRTCInterval);
             while (true) {
@@ -404,7 +392,7 @@ namespace NuttinToLose.Networking {
                 sdp = desc.sdp,
             };
             //Debug.Log($"Sending offer:\n{JsonUtility.ToJson(message)}");
-            yield return PushMessageRoutine("rtc-offer", message);
+            yield return PushMessage("rtc-offer", message);
         }
         void ReceiveOfferMessage(ServerSessionMessage message) {
             string id = message.from;
@@ -437,7 +425,7 @@ namespace NuttinToLose.Networking {
                 sdp = desc.sdp,
             };
             //Debug.Log($"Sending answer:\n{JsonUtility.ToJson(message)}");
-            yield return PushMessageRoutine("rtc-answer", message);
+            yield return PushMessage("rtc-answer", message);
         }
         void ReceiveAnswerMessage(ServerSessionMessage message) {
             string remoteId = message.from;
@@ -463,7 +451,7 @@ namespace NuttinToLose.Networking {
             if (remoteConnections.TryGetValue(remoteId, out connection)) {
                 connection.AddIceCandidate(candidate);
             }
-            StartCoroutine(PushMessageRoutine("rtc-ice", message));
+            PushMessage("rtc-ice", message);
         }
         void ReceiveICEMessage(ServerICEMessage message) {
             string id = message.from;
@@ -529,7 +517,6 @@ namespace NuttinToLose.Networking {
         void OnIceConnectionChange(RTCIceConnectionState state) {
             Debug.Log($"OnIceConnectionChange: {state}");
         }
-#endif
         #endregion
     }
 }

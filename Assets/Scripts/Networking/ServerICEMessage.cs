@@ -1,4 +1,3 @@
-#if !PLATFORM_WEBGL
 using System;
 
 namespace NuttinToLose.Networking {
@@ -9,4 +8,3 @@ namespace NuttinToLose.Networking {
         public int sdpMLineIndex;
     }
 }
-#endif
