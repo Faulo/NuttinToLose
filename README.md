@@ -1,5 +1,5 @@
 # Nuttin' to Lose
-A game about secrecy, deception and flying squirrels.
+A game about secrecy, deception, and flying squirrels.
 
 ## Jam Details
 Global Game Jam 2021
