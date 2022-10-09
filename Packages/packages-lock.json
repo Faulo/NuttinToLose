@@ -53,7 +53,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.4.2",
+      "version": "1.4.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -172,7 +172,7 @@
       }
     },
     "com.unity.webrtc": {
-      "version": "2.4.0-exp.10",
+      "version": "2.4.0-exp.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
