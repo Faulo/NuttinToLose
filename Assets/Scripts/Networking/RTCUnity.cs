@@ -4,15 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Unity.WebRTC;
-#endif
 using UnityEngine;
+#endif
 
 namespace NuttinToLose.Networking {
     public class RTCUnity : IRealTimeCommunicationController {
-        [Header("WebRTC")]
-        [SerializeField]
-        bool captureAudio = false;
-
 #if UNITY_WEBGL
         public void Dispose() {
         }
@@ -29,6 +25,10 @@ namespace NuttinToLose.Networking {
         public void SpawnPlayer(string id) {
         }
 #else
+        [Header("WebRTC")]
+        [SerializeField]
+        bool captureAudio = false;
+
         readonly Dictionary<string, RTCPeerConnection> localConnections = new();
         readonly Dictionary<string, RTCDataChannel> localDataChannels = new();
         readonly Dictionary<string, MediaStreamTrack> localTracks = new();

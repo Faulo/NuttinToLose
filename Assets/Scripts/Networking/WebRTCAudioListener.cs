@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace NuttinToLose.Networking {
     public class WebRTCAudioListener : MonoBehaviour {
+#if UNITY_WEBGL
+#else
         [SerializeField]
         bool useAudioListener = true;
         [SerializeField]
@@ -23,5 +25,6 @@ namespace NuttinToLose.Networking {
                 mic.GetData(buffer, 0);
             }
         }
+#endif
     }
 }
