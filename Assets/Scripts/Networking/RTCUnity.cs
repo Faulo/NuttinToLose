@@ -1,8 +1,10 @@
+#if !UNITY_WEBGL
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Unity.WebRTC;
+#endif
 using UnityEngine;
 
 namespace NuttinToLose.Networking {
@@ -11,6 +13,22 @@ namespace NuttinToLose.Networking {
         [SerializeField]
         bool captureAudio = false;
 
+#if UNITY_WEBGL
+        public void Dispose() {
+        }
+        public void ReceiveAnswerMessage(ServerSessionMessage message) {
+        }
+        public void ReceiveICEMessage(ServerICEMessage message) {
+        }
+        public void ReceiveOfferMessage(ServerSessionMessage message) {
+        }
+        public void SendToRemoteChannels(string data) {
+        }
+        public void SetUp(ServerConnection server) {
+        }
+        public void SpawnPlayer(string id) {
+        }
+#else
         readonly Dictionary<string, RTCPeerConnection> localConnections = new();
         readonly Dictionary<string, RTCDataChannel> localDataChannels = new();
         readonly Dictionary<string, MediaStreamTrack> localTracks = new();
@@ -71,7 +89,7 @@ namespace NuttinToLose.Networking {
             remoteConnections[id] = CreateConnection();
             remoteConnections[id].OnIceCandidate += candidate => AddRemoteCandidate(id, candidate);
             remoteDataChannels[id] = remoteConnections[id].CreateDataChannel("data", new RTCDataChannelInit());
-            
+
             if (audioStream != null) {
                 foreach (var track in audioStream.GetTracks()) {
                     remoteConnections[id].AddTrack(track, audioStream);
@@ -254,5 +272,6 @@ namespace NuttinToLose.Networking {
                 }
             }
         }
+#endif
     }
 }
