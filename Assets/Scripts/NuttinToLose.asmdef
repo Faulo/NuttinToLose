@@ -4,9 +4,9 @@
     "references": [
         "Unity.InputSystem",
         "Cinemachine",
-        "Slothsoft.UnityExtensions.Runtime",
         "Unity.TextMeshPro",
-        "Unity.WebRTC"
+        "Unity.WebRTC",
+        "Slothsoft.UnityExtensions"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
