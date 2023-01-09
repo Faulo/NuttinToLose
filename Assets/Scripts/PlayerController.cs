@@ -13,7 +13,7 @@ namespace NuttinToLose {
         [SerializeField]
         public bool isLocal = false;
         [SerializeField]
-        public PlayerData data = new PlayerData();
+        public PlayerData data = new();
 
         [Header("Remote Settings")]
         [SerializeField, Range(0, 1)]
@@ -34,16 +34,16 @@ namespace NuttinToLose {
                 }
             }
         }
-        void Awake() {
+        protected void Awake() {
             OnValidate();
         }
-        void OnValidate() {
+        protected void OnValidate() {
             if (!attachedRigidbody) {
                 attachedRigidbody = GetComponentInParent<Rigidbody>();
             }
         }
 
-        void FixedUpdate() {
+        protected virtual void FixedUpdate() {
             if (isLocal) {
                 UpdateStorage();
             } else {

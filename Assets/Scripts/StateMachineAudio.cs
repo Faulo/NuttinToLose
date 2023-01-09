@@ -26,6 +26,7 @@ namespace NuttinToLose {
             }
         }
 
+#pragma warning disable UNT0021 // Prefer protected Unity Message.
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
             Init(animator);
             audioInstance.time = offset;
@@ -38,5 +39,6 @@ namespace NuttinToLose {
                 audioInstance.Stop();
             }
         }
+#pragma warning restore UNT0021 // Prefer protected Unity Message.
     }
 }

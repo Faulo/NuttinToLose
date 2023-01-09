@@ -9,9 +9,9 @@ namespace NuttinToLose {
         [SerializeField]
         GameObject prefabToInstantiate = default;
         [SerializeField]
-        List<GameObject> nuts = new List<GameObject>();
+        List<GameObject> nuts = new();
 
-        void Start() {
+        protected void Start() {
             player.onNutChange += HandleNutChange;
         }
 
@@ -35,7 +35,7 @@ namespace NuttinToLose {
             Assert.IsTrue(count > 0);
             Assert.IsTrue(nuts.Count > 0);
             for (int i = 1; i < count + 1; i++) {
-                Destroy(nuts[nuts.Count - i]);
+                Destroy(nuts[^i]);
             }
             nuts.RemoveRange(nuts.Count - count, count);
         }

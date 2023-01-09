@@ -1,4 +1,3 @@
-
 namespace NuttinToLose {
     public enum PlayerState {
         Idle = 0,
