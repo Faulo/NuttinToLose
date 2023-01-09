@@ -270,6 +270,7 @@ dotnet_diagnostic.UNT0022.severity = warning	# Inefficient method to set positio
 dotnet_diagnostic.UNT0023.severity = warning	# Coalescing assignment on Unity objects
 dotnet_diagnostic.UNT0024.severity = warning	# Give priority to scalar calculations over vector calculations
 dotnet_diagnostic.UNT0025.severity = warning	# Input.GetKey overloads with KeyCode argument
+dotnet_diagnostic.UNT0026.severity = warning	# GetComponent always allocates
 
 # @UNT0004+UNT0005: https://docs.unity3d.com/ScriptReference/Time-fixedDeltaTime.html
 # @UNT0007+UNT0008: https://stackoverflow.com/questions/58487442/why-does-resharper-not-suggest-using-null-propagation-for-both-of-these-blocks
