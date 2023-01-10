@@ -41,8 +41,6 @@ namespace NuttinToLose.Networking {
         public void SetUp(ServerConnection server) {
             this.server = server;
 
-            WebRTC.Initialize();
-
             if (captureAudio) {
                 //audioStream = Audio.CaptureStream();
             }
@@ -74,7 +72,6 @@ namespace NuttinToLose.Networking {
                 track.Dispose();
             }
             localTracks.Clear();
-            WebRTC.Dispose();
         }
 
         public void SpawnPlayer(string id) {

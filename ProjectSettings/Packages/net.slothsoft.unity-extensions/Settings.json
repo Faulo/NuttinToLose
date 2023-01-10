@@ -25,6 +25,11 @@
                 "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.PrefabUtilsSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "m_expandableSettings",
                 "value": "{\"m_Value\":{\"assetsFolder\":\"Assets/\",\"prefabExtension\":\".prefab\"}}"
+            },
+            {
+                "type": "Slothsoft.UnityExtensions.Editor.PackageSettings.AndroidSettings, Slothsoft.UnityExtensions.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "m_androidSettings",
+                "value": "{\"m_Value\":{\"fixBurstCompilerPathForAndroid\":false}}"
             }
         ]
     }
