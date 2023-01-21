@@ -6,7 +6,8 @@
         "Cinemachine",
         "Unity.TextMeshPro",
         "Unity.WebRTC",
-        "Slothsoft.UnityExtensions"
+        "Slothsoft.UnityExtensions",
+        "MyBox"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
