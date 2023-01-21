@@ -13,14 +13,6 @@ namespace NuttinToLose {
         GameObject winterInstance = default;
 
         [Space]
-        [SerializeField, ReadOnly]
-        Bounds meshBounds = new();
-        [SerializeField, ReadOnly]
-        Bounds vertexBounds = new();
-        MeshRenderer meshRenderer => fallInstance.GetComponent<MeshRenderer>();
-        Mesh mesh => fallInstance.GetComponent<MeshFilter>().sharedMesh;
-
-        [Space]
         [SerializeField]
         ServerConnection server = default;
 
@@ -49,6 +41,24 @@ namespace NuttinToLose {
             winterInstance.SetActive(true);
         }
 #if UNITY_EDITOR
+
+        [Space]
+        [SerializeField]
+        bool alignPositionToTerrain = true;
+        [SerializeField, ConditionalField(nameof(alignPositionToTerrain))]
+        Vector3 positionOffset = Vector3.zero;
+        [SerializeField]
+        bool alignRotationToTerrain = false;
+        [SerializeField, ConditionalField(nameof(alignRotationToTerrain))]
+        Quaternion rotationOffset = Quaternion.identity;
+
+        [SerializeField, ReadOnly]
+        Bounds meshBounds = new();
+        [SerializeField, ReadOnly]
+        Bounds vertexBounds = new();
+        MeshRenderer meshRenderer => fallInstance.GetComponent<MeshRenderer>();
+        Mesh mesh => fallInstance.GetComponent<MeshFilter>().sharedMesh;
+
         void Awake() {
             OnValidate();
         }
@@ -65,6 +75,8 @@ namespace NuttinToLose {
                 : null;
             SetupEnvironment(fallInstance);
             SetupEnvironment(winterInstance);
+
+            rotationOffset = transform.localRotation;
         }
         public void SetupTransform() {
             if (gameObject.scene.isLoaded && fallInstance) {
@@ -99,20 +111,22 @@ namespace NuttinToLose {
             vertexBounds.extents = meshBounds.extents.WithY(meshBounds.center.y - minY);
         }
         void SetupTerrain() {
-            var terrain = FindObjectOfType<TerrainCollider>();
-            if (!terrain) {
-                return;
+            if (alignPositionToTerrain) {
+                float minY = GetBoundsPositions()
+                    .Min(SampleTerrainHeight);
+
+                minY += vertexBounds.extents.y;
+
+                transform.localPosition = transform.localPosition.WithY(minY);
             }
 
-            float minY = GetBoundsPositions()
-                .Min(SampleTerrainHeight);
-
-            minY += vertexBounds.extents.y;
-
-            transform.localPosition = transform.localPosition.WithY(minY);
-
-            var rotation = SampleTerrainNormal(transform.position);
-            transform.eulerAngles = Quaternion.FromToRotation(Vector3.up, rotation).eulerAngles.WithY(transform.eulerAngles.y);
+            if (alignRotationToTerrain) {
+                var normals = GetBoundsPositions()
+                    .Select(SampleTerrainNormal)
+                    .ToList();
+                var normal = normals.Aggregate((a, b) => a + b) / normals.Count;
+                transform.localRotation = Quaternion.FromToRotation(Vector3.up, normal) * rotationOffset;
+            }
         }
         IEnumerable<Vector3> GetBoundsPositions() {
             yield return meshBounds.center;
