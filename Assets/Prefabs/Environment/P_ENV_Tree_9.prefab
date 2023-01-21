@@ -157,7 +157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7930744210173399825, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 78.69417
       objectReference: {fileID: 0}
     - target: {fileID: 7930744210173399825, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -183,6 +183,14 @@ PrefabInstance:
       propertyPath: winterInstance
       value: 
       objectReference: {fileID: 4472142040440908144}
+    - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
+      propertyPath: positionOffset.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
+      propertyPath: alignRotationToTerrain
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
 --- !u!4 &3819376180535467267 stripped

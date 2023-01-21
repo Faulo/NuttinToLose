@@ -45,12 +45,12 @@ namespace NuttinToLose {
         [Space]
         [SerializeField]
         bool alignPositionToTerrain = true;
-        [SerializeField, ConditionalField(nameof(alignPositionToTerrain))]
+        [SerializeField]
         Vector3 positionOffset = Vector3.zero;
         [SerializeField]
         bool alignRotationToTerrain = false;
-        [SerializeField, ConditionalField(nameof(alignRotationToTerrain))]
-        Quaternion rotationOffset = Quaternion.identity;
+        [SerializeField]
+        float angleOffset = 0;
 
         [SerializeField, ReadOnly]
         Bounds meshBounds = new();
@@ -65,7 +65,9 @@ namespace NuttinToLose {
         [ContextMenu(nameof(OnValidate))]
         void OnValidate() {
             if (!server) {
-                server = FindObjectOfType<ServerConnection>();
+                server = gameObject.scene.isLoaded
+                    ? FindObjectOfType<ServerConnection>()
+                    : default;
             }
             fallInstance = transform.childCount > 0
                 ? transform.GetChild(0).gameObject
@@ -75,8 +77,6 @@ namespace NuttinToLose {
                 : null;
             SetupEnvironment(fallInstance);
             SetupEnvironment(winterInstance);
-
-            rotationOffset = transform.localRotation;
         }
         public void SetupTransform() {
             if (gameObject.scene.isLoaded && fallInstance) {
@@ -117,7 +117,7 @@ namespace NuttinToLose {
 
                 minY += vertexBounds.extents.y;
 
-                transform.localPosition = transform.localPosition.WithY(minY);
+                transform.localPosition = transform.localPosition.WithY(minY) + positionOffset;
             }
 
             if (alignRotationToTerrain) {
@@ -125,7 +125,7 @@ namespace NuttinToLose {
                     .Select(SampleTerrainNormal)
                     .ToList();
                 var normal = normals.Aggregate((a, b) => a + b) / normals.Count;
-                transform.localRotation = Quaternion.FromToRotation(Vector3.up, normal) * rotationOffset;
+                transform.localRotation = Quaternion.FromToRotation(Vector3.up, normal) * Quaternion.Euler(0, angleOffset, 0);
             }
         }
         IEnumerable<Vector3> GetBoundsPositions() {
