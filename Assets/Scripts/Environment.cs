@@ -1,3 +1,4 @@
+using System.Linq;
 using NuttinToLose.Networking;
 using Slothsoft.UnityExtensions;
 using UnityEngine;
@@ -38,6 +39,7 @@ namespace NuttinToLose {
             fallInstance.SetActive(false);
             winterInstance.SetActive(true);
         }
+        [ContextMenu(nameof(OnValidate))]
         protected void OnValidate() {
             if (!server) {
                 server = FindObjectOfType<ServerConnection>();
@@ -56,7 +58,6 @@ namespace NuttinToLose {
                 return;
             }
             obj.SetActive(true);
-            obj.transform.localPosition = Vector3.zero;
             obj.isStatic = true;
         }
 #if UNITY_EDITOR

@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: bf823ba8c14cee644809f4085c749b29, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bf823ba8c14cee644809f4085c749b29, type: 3}
       propertyPath: m_LocalPosition.x
@@ -79,19 +79,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 891a1439eb701d94bab3db1ce6a17f26, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 891a1439eb701d94bab3db1ce6a17f26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.06571293
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 891a1439eb701d94bab3db1ce6a17f26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.03193164
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 891a1439eb701d94bab3db1ce6a17f26, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.08551645
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 891a1439eb701d94bab3db1ce6a17f26, type: 3}
       propertyPath: m_LocalRotation.w
@@ -170,11 +170,11 @@ PrefabInstance:
     - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: fallInstance
       value: 
-      objectReference: {fileID: 6067186703674559564}
+      objectReference: {fileID: 3956348882322275999}
     - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: winterInstance
       value: 
-      objectReference: {fileID: 3956348882322275999}
+      objectReference: {fileID: 6067186703674559564}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
 --- !u!4 &3819376180535467267 stripped
