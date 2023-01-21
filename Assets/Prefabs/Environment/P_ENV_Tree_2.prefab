@@ -45,7 +45,7 @@ PrefabInstance:
       objectReference: {fileID: 7994666527240845750}
     - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: positionOffset.y
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8987212732499484046, guid: e2812fbd5a9a5a740b2c29a0fcb74b36, type: 3}
       propertyPath: alignRotationToTerrain
